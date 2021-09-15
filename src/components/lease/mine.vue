@@ -1,11 +1,15 @@
 <template>
-  <div class="lease-mine">这里是我的主页</div>
+  <div class="lease-mine"></div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import { Cell } from 'vant'
 export default defineComponent({
   name: 'lease_mine',
+  components: {
+    [Cell.name]: Cell,
+  },
   setup() {
     return {}
   },
