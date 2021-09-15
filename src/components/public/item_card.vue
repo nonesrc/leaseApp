@@ -8,10 +8,12 @@
         src="https://img.yzcdn.cn/vant/cat.jpeg"
       />
     </div>
-    <div class="describe">
-      <div class="van-multi-ellipsis--l2">这个是示例商品</div>
+    <div class="item-info">
+      <div class="describe">
+        <div class="van-multi-ellipsis--l2">这个是示例商品</div>
+      </div>
+      <div class="price"><span>¥</span>{{ price }}</div>
     </div>
-    <div class="price"><span>¥</span>{{ price }}</div>
   </div>
 </template>
 
@@ -47,20 +49,27 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@use "sass:math";
 @import '../../assets/styles/index.scss';
+
 .lease-item-card {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   width: 150px;
-  .describe {
-    font-size: 13px;
-  }
-  .price {
-    margin-top: auto;
-    color: $color-o-1;
-    span {
+  background: $font-color-1;
+  .item-info {
+    padding: math.div($g-1, 2);
+    .describe {
+      min-height: $g-2;
       font-size: 13px;
+    }
+    .price {
+      margin-top: auto;
+      color: $color-g-3;
+      span {
+        font-size: 13px;
+      }
     }
   }
 }

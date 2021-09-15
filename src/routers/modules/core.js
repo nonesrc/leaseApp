@@ -6,7 +6,6 @@ import Mine from '../../components/lease/mine.vue'
 // 登录页
 const entrance = {
   path: '/',
-  name: 'entrance',
   component: Entrance,
   meta: {
     tag: 'entrance',
@@ -16,16 +15,25 @@ const entrance = {
       path: 'home',
       name: 'lease_home',
       component: Home,
+      meta: {
+        tag: 'home',
+      },
     },
     {
       path: 'sort',
       name: 'lease_sort',
       component: Sort,
+      meta: {
+        tag: 'sort',
+      },
     },
     {
       path: 'mine',
       name: 'lease_mine',
       component: Mine,
+      meta: {
+        tag: 'mine',
+      },
     },
   ],
 }

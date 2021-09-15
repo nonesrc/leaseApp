@@ -2,15 +2,15 @@
   <div class="lease-sort">
     <section class="selection-taps">
       <van-tabs
-        v-model:active="active"
+        v-model:active="sortType"
         type="card"
         title-inactive-color="#082032"
-        color="#ff4c29"
+        color="#082032"
       >
         <van-tab title="服装租赁"></van-tab>
         <van-tab title="服装购买"></van-tab>
       </van-tabs>
-      <van-tabs v-model:active="active" color="#ff4c29">
+      <van-tabs v-model:active="clothingType" color="#082032">
         <van-tab title="推荐"></van-tab>
         <van-tab title="男装"></van-tab>
         <van-tab title="女装"></van-tab>
@@ -48,10 +48,16 @@ export default defineComponent({
     ItemCard,
   },
   setup() {
+    // 分类类型
+    const sortType = ref('服装租赁')
+    // 服装类型
+    const clothingType = ref('推荐')
+    // TEST
     const list = ref([])
     const loading = ref(false)
     const finished = ref(false)
-    return { list, loading, finished }
+    const onLoad = () => {}
+    return { sortType, clothingType, list, loading, finished, onLoad }
   },
 })
 </script>
