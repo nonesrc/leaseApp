@@ -1,11 +1,6 @@
 **基于Vue3和vite构建的小型商城平台**
 
 ```typescript
-/**
- * 数据库表字段设计
- * Author:zRain
- */
-
 import { customAlphabet } from 'nanoid'
 
 const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 10)
