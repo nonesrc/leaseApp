@@ -65,6 +65,7 @@ export default defineComponent({
 
 <style lang="scss">
 .layout-main {
-  min-height: 100vh;
+  // min-height: 100vh;
+  padding-bottom: 50px;
 }
 </style>

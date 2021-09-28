@@ -1,2 +1,4 @@
 export const BASE_API =
-  import.meta.env.VITE_MODE === 'DEV' ? 'http://rap2api.taobao.org/' : ''
+  import.meta.env.VITE_MODE === 'DEV'
+    ? 'http://rap2api.taobao.org/app/mock/291472/'
+    : ''

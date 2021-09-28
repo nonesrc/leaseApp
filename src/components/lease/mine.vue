@@ -40,7 +40,6 @@ export default defineComponent({
 <style lang="scss">
 @import '../../assets/styles/index.scss';
 .lease-mine {
-  min-height: 100vh;
   .mine-img {
     flex-direction: column;
     background-image: linear-gradient(

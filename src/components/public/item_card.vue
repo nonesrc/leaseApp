@@ -5,20 +5,22 @@
         width="150px"
         height="150px"
         fit="cover"
-        src="https://img.yzcdn.cn/vant/cat.jpeg"
+        :src="goods.main_img"
       />
     </div>
     <div class="item-info">
       <div class="describe">
-        <div class="van-multi-ellipsis--l2">这个是示例商品</div>
+        <div class="van-multi-ellipsis--l2">{{ goods.goods_name }}</div>
       </div>
-      <div class="price"><span>¥</span>{{ price }}</div>
+      <div class="price">
+        <span>¥</span>{{ goods.rent_money || goods.market_price }}/天
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent } from 'vue'
 import { Image as VanImage } from 'vant'
 export default defineComponent({
   name: 'lease_item_card',
@@ -26,20 +28,9 @@ export default defineComponent({
     [VanImage.name]: VanImage,
   },
   props: {
-    icon: {
-      type: String,
-      required: false,
-      default: 'https://www.example.com/items/example.png',
-    },
-    describe: {
-      type: String,
-      required: false,
-      default: '暂无此商品描述',
-    },
-    price: {
-      type: Number,
-      required: false,
-      default: 234,
+    goods: {
+      type: Object,
+      required: true,
     },
   },
   setup() {
@@ -60,16 +51,16 @@ export default defineComponent({
   background: $font-color-1;
   .item-info {
     padding: math.div($g-1, 2);
+    padding-top: 0px;
     .describe {
       min-height: $g-2;
       font-size: 13px;
+      margin-bottom: math.div($g-1, 2.5);
     }
     .price {
       margin-top: auto;
       color: $color-g-3;
-      span {
-        font-size: 13px;
-      }
+      font-size: 13px;
     }
   }
 }

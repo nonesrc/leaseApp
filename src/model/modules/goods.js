@@ -1,23 +1,3 @@
-// 商品详细信息表
-export const shopGoodsDetails = {
-  ...shopGoodsOverview,
-  ...shopGoodsStatus,
-  // 商品描述
-  description: '',
-  // 轮播图 id 数组
-  slide_show_array: [],
-  // 商品详情图 id 数组
-  deatil_imgs: [],
-  // 销售类型（0-租赁商品 1-全新商品）
-  sale_type: 0,
-  // 是否为商品套装
-  is_suit: 0,
-  // 上架时间
-  create_time: new Date().getTime(),
-  // 最后编辑时间
-  last_edit_time: new Date().getTime(),
-}
-
 // 商品大致信息表
 export const shopGoodsOverview = {
   // 商品 id(索引)
@@ -42,6 +22,26 @@ export const shopGoodsStatus = {
   view_nums: 0,
   // 销售量
   sales_nums: 0,
+}
+
+// 商品详细信息表
+export const shopGoodsDetails = {
+  ...shopGoodsOverview,
+  ...shopGoodsStatus,
+  // 商品描述
+  description: '',
+  // 轮播图 id 数组
+  slide_show_array: [],
+  // 商品详情图 id 数组
+  deatil_imgs: [],
+  // 销售类型（0-租赁商品 1-全新商品）
+  sale_type: 0,
+  // 是否为商品套装
+  is_suit: 0,
+  // 上架时间
+  create_time: new Date().getTime(),
+  // 最后编辑时间
+  last_edit_time: new Date().getTime(),
 }
 
 // 零售商品价目表

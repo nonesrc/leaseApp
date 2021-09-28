@@ -4,7 +4,7 @@ import {
   shopGoodsOverview,
   shopSellGoodsPrice,
 } from '../model'
-import { getRentGoodsList_API } from '../api'
+import { getRentGoodsList_API, getSellGoodsList_API } from '../api'
 import { axiosDataResolveHandle } from '../utils/helper'
 
 export default function () {
@@ -20,16 +20,31 @@ export default function () {
   const currentSellGoodsList = ref([])
 
   // 获取当前店铺的租赁商品列表
-  const getRentGoodsList = async (sort, page, count) => {
+  const getGoodsList = async (sort, page, count, type = 'rent') => {
     const { code, success, msg, data } = axiosDataResolveHandle(
-      await getRentGoodsList_API(sort, page, count)
+      type === 'rent'
+        ? await getRentGoodsList_API(sort, page, count)
+        : await getSellGoodsList_API(sort, page, count)
     )
-    console.log(data)
+    type === 'rent'
+      ? currentRentGoodsList.value.push(...data)
+      : currentSellGoodsList.value.push(...data)
+  }
+
+  // 清空商品列表
+  const clearGoodsList = type => {
+    ;(type === 'rent' && (currentRentGoodsList.value = [])) ||
+      (type === 'sell' && (currentSellGoodsList.value = []))
+    if (!type) {
+      currentRentGoodsList.value = []
+      currentSellGoodsList.value = []
+    }
   }
 
   return {
     currentRentGoodsList,
     currentSellGoodsList,
-    getRentGoodsList,
+    getGoodsList,
+    clearGoodsList,
   }
 }

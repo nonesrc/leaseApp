@@ -12,7 +12,7 @@ export function axiosDataResolveHandle(
 ) {
   let code, success, msg, data
   try {
-    const { code: _CODE, success: _SUCCESS, msg: _MSG, data: _DATA } = res
+    const { code: _CODE, success: _SUCCESS, msg: _MSG, data: _DATA } = res.data
     code = _CODE
     success = _SUCCESS
     msg = _MSG
