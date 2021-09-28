@@ -11,8 +11,12 @@
         v-for="index in Math.ceil(goodsList.length / 2)"
         :key="index"
       >
-        <van-col span="12"><ItemCard :goods="goodsList[index]" /></van-col>
-        <van-col span="12"><ItemCard :goods="goodsList[index + 1]" /></van-col>
+        <van-col span="12"
+          ><ItemCard :goods="goodsList[index]" :sortType="sortType"
+        /></van-col>
+        <van-col span="12"
+          ><ItemCard :goods="goodsList[index + 1]" :sortType="sortType"
+        /></van-col>
       </van-row>
     </van-list>
   </div>
@@ -35,6 +39,11 @@ export default defineComponent({
       type: Array,
       required: false,
       default: [],
+    },
+    sortType: {
+      type: String,
+      required: false,
+      default: 'rent',
     },
   },
   setup() {

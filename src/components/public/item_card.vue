@@ -13,7 +13,8 @@
         <div class="van-multi-ellipsis--l2">{{ goods.goods_name }}</div>
       </div>
       <div class="price">
-        <span>¥</span>{{ goods.rent_money || goods.market_price }}/天
+        <span>¥</span
+        >{{ sortType === 'rent' ? goods.rent_money : goods.market_price }}/天
       </div>
     </div>
   </div>
@@ -31,6 +32,11 @@ export default defineComponent({
     goods: {
       type: Object,
       required: true,
+    },
+    sortType: {
+      type: String,
+      required: false,
+      default: 'rent',
     },
   },
   setup() {

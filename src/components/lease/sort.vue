@@ -35,6 +35,7 @@
       :goodsList="
         sortType === 'rent' ? currentRentGoodsList : currentSellGoodsList
       "
+      :sortType="sortType"
     />
   </div>
 </template>
