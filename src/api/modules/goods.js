@@ -31,3 +31,13 @@ export function getSellGoodsList_API(sort, page, count) {
     data: { sort, page, count },
   })
 }
+
+/**
+ * 获取出售商品详细分类
+ */
+export function getClothingTypes_API() {
+  return ARFactory({
+    url: DEV_MODE ? '/api/public/shop/clothingType' : '',
+    method: 'GET',
+  })
+}
