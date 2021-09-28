@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { handleError, API, getRouter } from '../util'
+import { BASE_API } from '../utils/config'
 
 // axios基本配置
 const Axios = axios.create({
-  baseURL: API,
+  baseURL: BASE_API,
 })
 
 // 当前所有请求
@@ -74,8 +74,9 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   response => {
     delReq(response)
-    if (response.status !== 200 || response.data.code !== 2000)
-      handleError(response.data, getRouter())
+    if (response.status !== 200) {
+      console.log('请求返回了非预期的结果！请求信息：' + response.config)
+    }
     return response
   },
   err => {

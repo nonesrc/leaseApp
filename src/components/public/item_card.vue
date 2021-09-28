@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import { Image as VanImage } from 'vant'
 export default defineComponent({
   name: 'lease_item_card',
@@ -49,7 +49,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@use "sass:math";
+@use 'sass:math';
 @import '../../assets/styles/index.scss';
 
 .lease-item-card {
