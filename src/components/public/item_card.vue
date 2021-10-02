@@ -1,5 +1,11 @@
 <template>
-  <div class="lease-item-card">
+  <router-link
+    class="lease-item-card"
+    :to="{
+      name: sortType === 'rent' ? 'rent_details' : 'sell_details',
+      query: { goods_id: '123456' },
+    }"
+  >
     <div class="icon">
       <van-image
         width="150px"
@@ -17,7 +23,7 @@
         >{{ sortType === 'rent' ? goods.rent_money : goods.market_price }}/天
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -55,6 +61,7 @@ export default defineComponent({
   margin: 0 auto;
   width: 150px;
   background: $font-color-1;
+  color: inherit;
   .item-info {
     padding: math.div($g-1, 2);
     padding-top: 0px;

@@ -13,7 +13,7 @@
     <van-grid :column-num="3">
       <van-grid-item icon="orders-o" text="订单" :to="{ name: 'orders' }" />
       <van-grid-item icon="cart-o" text="购物车" :to="{ name: 'cart' }" />
-      <van-grid-item icon="newspaper-o" text="通知" :to="{ name: 'message' }"/>
+      <van-grid-item icon="newspaper-o" text="通知" :to="{ name: 'message' }" />
     </van-grid>
   </div>
 </template>

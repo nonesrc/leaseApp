@@ -6,6 +6,8 @@ export const shopGoodsOverview = {
   goods_code: '',
   // 所属店铺 id
   shop_id: '',
+  // 所属店铺名
+  shop_name: '',
   // 商品名称
   goods_name: '',
   // 单位/量纲
@@ -50,8 +52,6 @@ export const shopSellGoodsPrice = {
   market_price: 0,
   // 零售-商品原单价（分）
   original_price: 0,
-  // 零售-商品成本价（分）
-  cost_price: 0,
 }
 
 // 租赁商品价目表
@@ -60,8 +60,6 @@ export const shopRentGoodsPrice = {
   deposit: 0,
   // 租金/天（分）
   rent_money: 0,
-  // 产品本金（分）
-  original_price: 0,
 }
 
 // 商品套装详情表

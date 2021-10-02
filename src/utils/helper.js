@@ -28,3 +28,12 @@ export function axiosDataResolveHandle(
     data,
   }
 }
+
+/**
+ * 计算正确的花费
+ * @param {number} count 钱的数量
+ * @returns
+ */
+export function resolveMoney(count) {
+  return (count / 100).toFixed(2)
+}
