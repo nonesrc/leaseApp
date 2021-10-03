@@ -19,11 +19,15 @@
           >
           <template #label>
             <div class="goods-price">
-              <span>租赁价格: </span>
+              <span>价格: </span>
               ¥ {{ resolveMoney(currentGoodsDetails._showPrice) }}
             </div>
+            <div class="goods-deposit">
+              <span>押金: </span>
+              ¥ {{ resolveMoney(currentGoodsDetails.deposit) }}
+            </div>
             <div class="goods-unit">
-              <span>计量方式: </span>
+              <span>单位: </span>
               {{ currentGoodsDetails.unit }}
             </div>
           </template>
@@ -70,8 +74,17 @@
           type="warning"
           text="加入购物车"
         />
-        <van-action-bar-button color="#334756" type="danger" text="立即购买" />
+        <van-action-bar-button
+          color="#334756"
+          type="danger"
+          text="立即购买"
+          @click="isShowSkuSheet = true"
+        />
       </van-action-bar>
+      <Sku
+        :showSheet="isShowSkuSheet"
+        :closeSheetHandle="() => (isShowSkuSheet = false)"
+      />
     </div>
   </van-config-provider>
 </template>
@@ -96,6 +109,7 @@ import {
 import useGoods from '../../composable/goods'
 import router from '../../routers'
 import { resolveMoney } from '../../utils/helper'
+import Sku from './goods/sku.vue'
 export default defineComponent({
   name: 'lease_goods',
   components: {
@@ -112,6 +126,7 @@ export default defineComponent({
     [VanImage.name]: VanImage,
     [Loading.name]: Loading,
     [ConfigProvider.name]: ConfigProvider,
+    Sku,
   },
   setup() {
     const {
@@ -126,6 +141,8 @@ export default defineComponent({
         : currentSellGoodsDetails
     // 当前标签状态
     const currentTabs = ref('details')
+    // 是否展示Sku
+    const isShowSkuSheet = ref(false)
     // 自定义主题
     const themeVars = {
       swipeIndicatorActiveBackgroundColor: '#2c394b',
@@ -134,7 +151,13 @@ export default defineComponent({
     !(async () => {
       await getGoodsDetails('13123213')
     })()
-    return { themeVars, currentGoodsDetails, resolveMoney, currentTabs }
+    return {
+      themeVars,
+      currentGoodsDetails,
+      resolveMoney,
+      currentTabs,
+      isShowSkuSheet,
+    }
   },
 })
 </script>
@@ -158,6 +181,7 @@ export default defineComponent({
     margin-top: math.div($g-1, 2);
     margin-bottom: $g-1;
   }
+  .goods-deposit,
   .goods-price,
   .goods-unit {
     color: $color-g-2;
@@ -166,9 +190,10 @@ export default defineComponent({
     margin-bottom: math.div($g-1, 2);
     span {
       font-size: 14px;
-      color: $font-color-6;
     }
-    &.goods-unit {
+    &.goods-unit,
+    &.goods-deposit {
+      color: $font-color-6;
       font-size: 14px;
     }
   }
