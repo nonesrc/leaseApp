@@ -1,5 +1,5 @@
 <template>
-  <div class="lease-sku-step-slider">
+  <div class="lease-sku-slider">
     <van-slider
       v-model="currentSelect"
       active-color="#334756"
@@ -22,7 +22,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import { Slider } from 'vant'
 export default defineComponent({
-  name: 'lease_sku_step_slider',
+  name: 'lease_sku_slider',
   components: {
     [Slider.name]: Slider,
   },
@@ -37,7 +37,7 @@ export default defineComponent({
     const currentSelect = ref(0)
     watch(currentSelect, val => {
       ctx.emit(
-        'selectionChange',
+        'skuChange',
         Math.round(val / (100 / (props.recordList.length - 1)))
       )
     })
@@ -49,7 +49,7 @@ export default defineComponent({
 <style lang="scss">
 @use 'sass:math';
 @import '../../../../assets/styles/index.scss';
-.lease-sku-step-slider {
+.lease-sku-slider {
   margin-top: $g-1;
   padding: 0 $g-1;
   .custom-button {

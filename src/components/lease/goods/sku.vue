@@ -12,8 +12,8 @@
             <van-image
               :src="'http://dummyimage.com/360x360/f2ec79/png&text=bnscwg'"
               alt="商品缩略图"
-              width="64"
-              height="64"
+              width="80"
+              height="80"
             >
               <template v-slot:loading>
                 <van-loading type="spinner" size="20" :vertical="true" />
@@ -22,51 +22,21 @@
           </div>
           <div class="sku-content">
             <van-cell-group :border="false">
-              <!-- 体重 -->
               <van-cell
-                :title="`身高(cm): ${heightLevel[skuHeight].label}`"
                 :border="false"
+                v-for="(sku, index) in SKU_TEST.skus"
+                :key="index"
               >
-                <template #label>
-                  <div class="sku-height">
-                    <StepSlider
-                      :recordList="heightLevel"
-                      @selectionChange="val => (skuHeight = val)"
-                    >
-                    </StepSlider>
-                  </div>
+                <template #title>
+                  {{ sku.banner }}
                 </template>
-              </van-cell>
-              <!-- 身高 -->
-              <van-cell
-                :title="`体重(斤): ${weightLevel[skuWeight].label}`"
-                :border="false"
-              >
-                <template #label>
-                  <div class="sku-weight">
-                    <StepSlider
-                      :recordList="weightLevel"
-                      @selectionChange="val => (skuWeight = val)"
-                    >
-                    </StepSlider>
-                  </div>
+                <template v-slot:[sku.slotTarget]>
+                  <component
+                    :is="SKU[sku.type]"
+                    :recordList="sku.records"
+                    @skuChange="val => (userRecords[sku.key] = val)"
+                  />
                 </template>
-              </van-cell>
-              <!-- 测试颜色单选 -->
-              <van-cell title="颜色" :border="false">
-                <template #label>
-                  <SelectBox
-                    :recordlist="colorSelect"
-                    @selectionChange="val => (skuColor = val)"
-                /></template>
-              </van-cell>
-              <!-- 测试大小单选 -->
-              <van-cell title="大小" :border="false">
-                <template #label>
-                  <SelectBox
-                    :recordlist="sizeSelect"
-                    @selectionChange="val => (skuSize = val)"
-                /></template>
               </van-cell>
             </van-cell-group>
           </div>
@@ -79,8 +49,7 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import StepSlider from './sku/step_slider.vue'
-import SelectBox from './sku/select_box.vue'
+import SKU from './sku/SKU'
 import {
   ActionSheet,
   Image as VanImage,
@@ -91,6 +60,7 @@ import {
   Radio,
   ConfigProvider,
 } from 'vant'
+import SKU_TEST from '../../../test/sku.json'
 export default defineComponent({
   name: 'lease_sku',
   components: {
@@ -102,8 +72,6 @@ export default defineComponent({
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
     [ConfigProvider.name]: ConfigProvider,
-    StepSlider,
-    SelectBox,
   },
   props: {
     showSheet: {
@@ -122,83 +90,24 @@ export default defineComponent({
     const themeVars = {
       actionSheetCancelPaddingTop: 0,
     }
-    //  身高尺码对应
-    const heightLevel = [
-      { tag: 'LV1', label: '140~149' },
-      { tag: 'LV2', label: '150~159' },
-      { tag: 'LV3', label: '160~169' },
-      { tag: 'LV4', label: '170~179' },
-      { tag: 'LV5', label: '180~190' },
-    ]
-    //  体重尺码对应
-    const weightLevel = [
-      { tag: 'LV1', label: '70~79' },
-      { tag: 'LV2', label: '80~94' },
-      { tag: 'LV3', label: '95~99' },
-      { tag: 'LV4', label: '100~109' },
-      { tag: 'LV5', label: '110~119' },
-      { tag: 'LV6', label: '120~124' },
-      { tag: 'LV7', label: '125~129' },
-      { tag: 'LV8', label: '130~135' },
-      { tag: 'LV9', label: '136~149' },
-    ]
-    // 颜色选项
-    const colorSelect = [
-      {
-        label: '天蓝',
-      },
-      {
-        label: '墨绿',
-      },
-      {
-        label: '浅灰',
-      },
-      {
-        label: '深红',
-      },
-      {
-        label: '玄黑',
-      },
-    ]
-    // 大小选项
-    const sizeSelect = [
-      {
-        label: 'S',
-      },
-      {
-        label: 'M',
-      },
-      {
-        label: 'L',
-      },
-      {
-        label: 'XL',
-      },
-      {
-        label: '2XL',
-      },
-      {
-        label: '3XL',
-      },
-    ]
-    // 身高
-    const skuHeight = ref(0)
-    // 体重
-    const skuWeight = ref(0)
-    // 颜色
-    const skuColor = ref(0)
-    // 大小
-    const skuSize = ref(0)
+    const userRecords = ref({})
+    !(async () => {
+      SKU_TEST.skus.forEach(function (sku) {
+        if (sku.type === 'SKU_slider' || sku.type === 'SKU_selector') {
+          userRecords.value[sku.key] = 0
+          sku.slotTarget = 'label'
+        }
+        if (sku.type === 'SKU_counter') {
+          userRecords.value[sku.key] = sku.records.min
+          sku.slotTarget = 'value'
+        }
+      })
+    })()
     return {
+      SKU,
       themeVars,
-      heightLevel,
-      weightLevel,
-      colorSelect,
-      sizeSelect,
-      skuHeight,
-      skuWeight,
-      skuColor,
-      skuSize,
+      userRecords,
+      SKU_TEST,
     }
   },
 })
