@@ -6,12 +6,14 @@
         :round="false"
         :close-on-click-overlay="false"
         @click-overlay="closeSheetHandle"
+        @opened="() => !skuReady && getGoodsSku()"
       >
-        <div class="sku-box">
+        <van-loading v-if="!skuReady" :vertical="true" />
+        <div class="sku-box" v-else>
           <div class="goods-info">
             <van-image
-              :src="'http://dummyimage.com/360x360/f2ec79/png&text=bnscwg'"
-              alt="商品缩略图"
+              :src="currentGoodsInfo.main_img"
+              :alt="currentGoodsInfo.goods_name"
               width="80"
               height="80"
             >
@@ -19,16 +21,22 @@
                 <van-loading type="spinner" size="20" :vertical="true" />
               </template>
             </van-image>
+            <div class="goods_name">{{ currentGoodsInfo.goods_name }}</div>
           </div>
           <div class="sku-content">
             <van-cell-group :border="false">
               <van-cell
                 :border="false"
-                v-for="(sku, index) in SKU_TEST.skus"
+                v-for="(sku, index) in currentGoodsSku"
                 :key="index"
               >
                 <template #title>
-                  {{ sku.banner }}
+                  {{
+                    sku.banner +
+                    (Array.isArray(sku.records)
+                      ? ': ' + sku.records[userRecords[sku.key]].label
+                      : '')
+                  }}
                 </template>
                 <template v-slot:[sku.slotTarget]>
                   <component
@@ -48,7 +56,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
+import useSku from '../../../composable/sku'
 import SKU from './sku/SKU'
 import {
   ActionSheet,
@@ -60,7 +69,6 @@ import {
   Radio,
   ConfigProvider,
 } from 'vant'
-import SKU_TEST from '../../../test/sku.json'
 export default defineComponent({
   name: 'lease_sku',
   components: {
@@ -86,28 +94,25 @@ export default defineComponent({
     },
   },
   setup() {
+    const {
+      skuReady,
+      currentGoodsInfo,
+      currentGoodsSku,
+      getGoodsSku,
+      userRecords,
+    } = useSku('12312312321')
     // css配置
     const themeVars = {
       actionSheetCancelPaddingTop: 0,
     }
-    const userRecords = ref({})
-    !(async () => {
-      SKU_TEST.skus.forEach(function (sku) {
-        if (sku.type === 'SKU_slider' || sku.type === 'SKU_selector') {
-          userRecords.value[sku.key] = 0
-          sku.slotTarget = 'label'
-        }
-        if (sku.type === 'SKU_counter') {
-          userRecords.value[sku.key] = sku.records.min
-          sku.slotTarget = 'value'
-        }
-      })
-    })()
     return {
       SKU,
       themeVars,
       userRecords,
-      SKU_TEST,
+      skuReady,
+      currentGoodsInfo,
+      currentGoodsSku,
+      getGoodsSku,
     }
   },
 })
@@ -117,10 +122,20 @@ export default defineComponent({
 @use 'sass:math';
 @import '../../../assets/styles/index.scss';
 .lease-sku {
+  .van-loading {
+    padding-top: $g-2;
+    padding-bottom: $g-1;
+  }
   .sku-box {
     .goods-info {
+      display: flex;
+      width: 100%;
       padding: $g-1;
       padding-bottom: 0;
+      .goods_name {
+        padding: math.div($g-1, 2);
+        flex-grow: 1;
+      }
     }
   }
 }

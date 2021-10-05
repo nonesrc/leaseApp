@@ -67,3 +67,20 @@ export function getClothingTypes_API() {
     method: 'GET',
   })
 }
+
+/**
+ * 获取商品sku
+ * @param {number} goods_id 商品id
+ * @returns
+ */
+export function getGoodsSku_API(goods_id) {
+  return ARFactory({
+    url: DEV_MODE
+      ? 'https://www.fastmock.site/mock/1a36bdaf985581497491f9d4d351fda3/rent/rent/test'
+      : '',
+    method: 'GET',
+    data: {
+      goods_id,
+    },
+  })
+}
