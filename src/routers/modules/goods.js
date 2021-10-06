@@ -1,5 +1,6 @@
 import Utils from '../../views/utils.vue'
 import Goods from '../../components/lease/goods.vue'
+import CheckOrder from '../../components/lease/order/check_order.vue'
 
 // 登录页
 const goods = {
@@ -24,6 +25,14 @@ const goods = {
       component: Goods,
       meta: {
         tag: 'sell',
+      },
+    },
+    {
+      path: 'check_order',
+      name: 'check_order',
+      component: CheckOrder,
+      meta: {
+        tag: 'check_order',
       },
     },
   ],
