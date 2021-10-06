@@ -24,7 +24,7 @@
               />
               <van-field
                 v-model="address"
-                rows="1"
+                rows="2"
                 autosize
                 label="收件人地址"
                 type="textarea"
@@ -79,10 +79,32 @@
         </div>
       </div>
       <OrderList />
+      <van-cell-group>
+        <van-cell
+          title="总价"
+          label="购买商品总价(不包括租赁商品)"
+          :center="true"
+        >
+          <template #value> <Price :amount="1" /> </template
+        ></van-cell>
+        <van-cell title="运输" label="上门送还花费" :center="true">
+          <template #value>
+            <Price :amount="1243" />
+          </template>
+        </van-cell>
+        <van-cell title="押金" label="总押金" :center="true">
+          <template #value>
+            <Price :amount="0" />
+          </template>
+        </van-cell>
+        <van-cell title="租赁" label="所有商品租赁计费(元/天)" :center="true">
+          <template #value> <Price :amount="9812" /> </template
+        ></van-cell>
+      </van-cell-group>
       <van-submit-bar
         disabled
         :price="3050"
-        tip="上门送还需正确填写个人信息"
+        :tip="transportType === 'no_self' ? '上门送还需正确填写个人信息' : ''"
         tip-icon="info-o"
         @submit="onSubmitOrder"
       >
@@ -97,9 +119,11 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import OrderList from './order_list.vue'
+import Price from '../../public/price.vue'
 import {
   Field,
   CellGroup,
+  Cell,
   Tab,
   Tabs,
   Image as VanImage,
@@ -116,6 +140,7 @@ export default defineComponent({
   components: {
     [Field.name]: Field,
     [CellGroup.name]: CellGroup,
+    [Cell.name]: Cell,
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     [VanImage.name]: VanImage,
@@ -125,6 +150,7 @@ export default defineComponent({
     [Icon.name]: Icon,
     [SubmitBar.name]: SubmitBar,
     OrderList,
+    Price,
   },
   setup() {
     // CSS
@@ -178,6 +204,7 @@ export default defineComponent({
 @use 'sass:math';
 @import '../../../assets/styles/index.scss';
 .lease-check-order {
+  padding-bottom: 86px;
   .goods-transport {
     background-image: linear-gradient(to bottom, #dee2e6, #e7e9ec, #ffffff);
     padding: $g-2 0;
