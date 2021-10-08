@@ -53,15 +53,14 @@ export default defineComponent({
     }
     // 确认选取时间
     const confirmTime = time => {
-      let time = new Date(time).getTime()
+      let timeFormat = new Date(time).getTime()
       if (currentPickMode.value === 'begin') {
-        beginTime.value = time
-        ctx.emit('changeBeginTime', time)
+        beginTime.value = timeFormat
+        ctx.emit('changeBeginTime', timeFormat)
       } else {
-        endTime.value = new Date(time).getTime()
-        ctx.emit('changeEndTime', time)
+        endTime.value = new Date(timeFormat).getTime()
+        ctx.emit('changeEndTime', timeFormat)
       }
-
       showPicker.value = false
     }
     return {

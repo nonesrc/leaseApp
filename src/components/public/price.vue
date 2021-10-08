@@ -1,5 +1,8 @@
 <template>
-  <div class="lease-price" :style="`font-size:${fontSise}px`">
+  <div
+    class="lease-price"
+    :style="`font-size:${fontSise}px;color:${fontColor};`"
+  >
     <span class="flag" v-show="showFlag">¥</span
     ><span class="M-1">{{ beautifyMoney[0] }}</span
     >.<span class="M-2">{{ beautifyMoney[1] }}</span>
@@ -26,6 +29,11 @@ export default defineComponent({
       required: false,
       default: 14,
     },
+    fontColor: {
+      type: String,
+      required: false,
+      default: '#2c394b',
+    },
   },
   setup(props) {
     const beautifyMoney = computed(() => {
@@ -40,7 +48,6 @@ export default defineComponent({
 <style lang="scss">
 @import '../../assets/styles/index.scss';
 .lease-price {
-  color: $font-color-7;
   font-weight: 500;
   .flag,
   .M-2 {
