@@ -47,8 +47,12 @@
                 </template>
               </van-cell>
             </van-cell-group>
+            <component
+              :is="SKU['SKU_timer']"
+              @changeBeginTime="changeBeginTime"
+              @changeEndTime="changeEndTime"
+            ></component>
           </div>
-          <div class="time-picker"></div>
         </div>
         <template #cancel> <div>确定</div> </template>
       </van-action-sheet>
@@ -129,6 +133,7 @@ export default defineComponent({
   }
   .sku-box {
     .goods-info {
+      box-sizing: border-box;
       display: flex;
       width: 100%;
       padding: $g-1;
