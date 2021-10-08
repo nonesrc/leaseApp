@@ -118,7 +118,7 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import OrderList from './order_list.vue'
+import OrderList from './check_order_list.vue'
 import Price from '../../public/price.vue'
 import {
   Field,

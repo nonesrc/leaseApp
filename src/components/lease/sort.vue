@@ -44,7 +44,7 @@
 import { defineComponent, ref, inject } from 'vue'
 import { coreStateKey } from '../../state'
 import { Tab, Tabs, Sticky, Loading } from 'vant'
-import GoodsList from '../public/goods_list.vue'
+import GoodsList from './goods/goods_list.vue'
 import useGoods from '../../composable/goods'
 export default defineComponent({
   name: 'lease_sort',

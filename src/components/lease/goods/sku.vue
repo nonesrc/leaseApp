@@ -48,6 +48,7 @@
               </van-cell>
             </van-cell-group>
           </div>
+          <div class="time-picker"></div>
         </div>
         <template #cancel> <div>确定</div> </template>
       </van-action-sheet>

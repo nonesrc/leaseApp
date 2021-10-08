@@ -41,6 +41,8 @@ export default defineComponent({
 @import '../../assets/styles/index.scss';
 .lease-mine {
   .mine-img {
+    box-sizing: border-box;
+    height: 250px;
     flex-direction: column;
     background-image: linear-gradient(
       to right top,

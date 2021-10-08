@@ -1,19 +1,83 @@
 <template>
-  <div class="lease-orders">这里是订单界面</div>
+  <div class="lease-orders">
+    <van-search v-model="searchValue" placeholder="请输入搜索关键词">
+      <template #left>
+        <van-popover
+          v-model:show="showFilter"
+          placement="right-start"
+          :actions="filterActions"
+          @select="onFilterSelect"
+        >
+          <template #reference>
+            <van-button size="small" color="#2c394b" style="margin-right: 10px"
+              ><van-icon name="filter-o" /> {{ filterValue }}</van-button
+            >
+          </template>
+        </van-popover>
+      </template>
+    </van-search>
+    <van-tabs
+      v-model:active="activeTab"
+      title-inactive-color="#082032"
+      color="#082032"
+    >
+      <van-tab title="已完成" name="completed"> </van-tab>
+      <van-tab title="准备中" name="preparing"></van-tab>
+      <van-tab title="待付款" name="pending-pay"></van-tab>
+    </van-tabs>
+    <div class="order-content">
+      <OrderList />
+    </div>
+  </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import OrderList from '../order/order_list.vue'
+import { Tab, Tabs, Search, Popover, Button, Icon } from 'vant'
 export default defineComponent({
   name: 'lease_orders',
+  components: {
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs,
+    [Search.name]: Search,
+    [Popover.name]: Popover,
+    [Button.name]: Button,
+    [Icon.name]: Icon,
+    OrderList,
+  },
   setup() {
-    return {}
+    // 搜索内容
+    const searchValue = ref('')
+    // 过滤
+    const showFilter = ref(false)
+    const filterActions = [
+      { text: '全部商品' },
+      { text: '租赁商品' },
+      { text: '出售商品' },
+    ]
+    const filterValue = ref(filterActions[0].text)
+    const onFilterSelect = action => (filterValue.value = action.text)
+    // 当前活跃Tabs
+    const activeTab = ref('completed')
+    return {
+      activeTab,
+      searchValue,
+      showFilter,
+      filterActions,
+      filterValue,
+      onFilterSelect,
+    }
   },
 })
 </script>
 
 <style lang="scss">
+@import '../../../assets/styles/index.scss';
 .lease-orders {
   min-height: 100vh;
+  .order-content {
+    padding-top: $g-1;
+  }
 }
 </style>

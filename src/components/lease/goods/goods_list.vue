@@ -65,7 +65,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../assets/styles/index.scss';
+@import '../../../assets/styles/index.scss';
 
 .lease-goods-list {
   .van-row:not(:last-child) {

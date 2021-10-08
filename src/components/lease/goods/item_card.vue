@@ -53,7 +53,7 @@ export default defineComponent({
 
 <style lang="scss">
 @use 'sass:math';
-@import '../../assets/styles/index.scss';
+@import '../../../assets/styles/index.scss';
 
 .lease-item-card {
   display: flex;
