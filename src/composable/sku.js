@@ -21,7 +21,7 @@ export default function (goods_id) {
       currentGoodsSku.value = data.skus
       currentGoodsSku.value.forEach(function (sku) {
         if (sku.type === 'SKU_slider' || sku.type === 'SKU_selector') {
-          userRecords.value[sku.key] = 0
+          userRecords.value[sku.key] = sku.records[0].id
           sku.slotTarget = 'label'
         }
         if (sku.type === 'SKU_counter') {

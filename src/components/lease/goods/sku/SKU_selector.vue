@@ -1,13 +1,13 @@
 <template>
   <div class="lease-sku-selector">
     <van-tag
-      :plain="currentSelect !== index"
+      :plain="currentSelect !== record.id"
       type="primary"
       size="large"
       color="#334756"
       v-for="(record, index) in recordList"
       :key="index"
-      @click="currentSelect = index"
+      @click="currentSelect = record.id"
       >{{ record.label }}</van-tag
     >
   </div>

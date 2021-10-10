@@ -38,7 +38,9 @@ export default defineComponent({
     watch(currentSelect, val => {
       ctx.emit(
         'skuChange',
-        Math.round(val / (100 / (props.recordList.length - 1)))
+        props.recordList[
+          Math.round(val / (100 / (props.recordList.length - 1)))
+        ].id
       )
     })
     return { currentSelect }

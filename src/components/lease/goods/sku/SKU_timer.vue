@@ -2,11 +2,17 @@
   <div class="lease-sku-timer">
     <div class="banenr">选取租赁时间</div>
     <div class="btn-box">
-      <van-button plain color="#2c394b" size="small" @click="beginSelector"
-        >选取开始时间</van-button
-      ><van-button plain color="#2c394b" size="small" @click="endSelector"
-        >选取结束时间</van-button
-      >
+      <van-button plain color="#2c394b" size="small" @click="beginSelector">{{
+        beginTime === 0
+          ? '选取开始时间'
+          : dateFormat('m月d日 H时', new Date(beginTime))
+      }}</van-button>
+      <van-icon name="arrow" />
+      <van-button plain color="#2c394b" size="small" @click="endSelector">{{
+        endTime === 0
+          ? '选取结束时间'
+          : dateFormat('m月d日 H时', new Date(endTime))
+      }}</van-button>
     </div>
     <van-action-sheet v-model:show="showPicker">
       <van-datetime-picker
@@ -15,6 +21,7 @@
         visible-item-count="3"
         title="年/月/日/小时"
         @confirm="confirmTime"
+        @cancel="showPicker = false"
       />
     </van-action-sheet>
   </div>
@@ -22,13 +29,15 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import { DatetimePicker, ActionSheet, Button } from 'vant'
+import { DatetimePicker, ActionSheet, Button, Icon } from 'vant'
+import { dateFormat } from '../../../../utils/helper'
 export default defineComponent({
   name: 'lease_sku_timer',
   components: {
     [DatetimePicker.name]: DatetimePicker,
     [ActionSheet.name]: ActionSheet,
     [Button.name]: Button,
+    [Icon.name]: Icon,
   },
   setup(props, ctx) {
     // 当前选取时间模式
@@ -58,12 +67,13 @@ export default defineComponent({
         beginTime.value = timeFormat
         ctx.emit('changeBeginTime', timeFormat)
       } else {
-        endTime.value = new Date(timeFormat).getTime()
+        endTime.value = timeFormat
         ctx.emit('changeEndTime', timeFormat)
       }
       showPicker.value = false
     }
     return {
+      dateFormat,
       showPicker,
       currentTime,
       beginTime,
@@ -88,6 +98,7 @@ export default defineComponent({
   .btn-box {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
   }
 }
 </style>

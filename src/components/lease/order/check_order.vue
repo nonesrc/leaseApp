@@ -78,7 +78,7 @@
           </div>
         </div>
       </div>
-      <OrderList />
+      <CheckOrderList />
       <van-cell-group>
         <van-cell
           title="总价"
@@ -117,8 +117,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import OrderList from './check_order_list.vue'
+import { defineComponent, onMounted, ref } from 'vue'
+import CheckOrderList from './check_order_list.vue'
 import Price from '../../public/price.vue'
 import {
   Field,
@@ -135,6 +135,7 @@ import {
 } from 'vant'
 import { getPickerShop_API } from '../../../api'
 import { axiosDataResolveHandle } from '../../../utils/helper'
+import router from '../../../routers'
 export default defineComponent({
   name: 'lease_check_order',
   components: {
@@ -149,7 +150,7 @@ export default defineComponent({
     [Tag.name]: Tag,
     [Icon.name]: Icon,
     [SubmitBar.name]: SubmitBar,
-    OrderList,
+    CheckOrderList,
     Price,
   },
   setup() {
@@ -183,6 +184,10 @@ export default defineComponent({
     const phone = ref('')
     // 地址
     const address = ref('')
+
+    onMounted(() => {
+      console.log(router.currentRoute.value)
+    })
 
     // 提交订单
     const onSubmitOrder = () => {}

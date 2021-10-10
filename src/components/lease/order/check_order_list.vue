@@ -13,7 +13,7 @@
           />
         </template>
       </van-cell>
-      <div class="suit-content">
+      <div class="suit-content" v-if="false">
         <div class="banner">套装包含：</div>
         <van-cell :border="false">
           <template #value>
