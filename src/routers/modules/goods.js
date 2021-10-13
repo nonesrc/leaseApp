@@ -17,6 +17,7 @@ const goods = {
       component: Goods,
       meta: {
         tag: 'rent',
+        title: '商品详情',
       },
     },
     {
@@ -25,6 +26,7 @@ const goods = {
       component: Goods,
       meta: {
         tag: 'sell',
+        title: '商品详情',
       },
     },
     {
@@ -33,6 +35,7 @@ const goods = {
       component: CheckOrder,
       meta: {
         tag: 'check_order',
+        title: '生成订单',
       },
     },
   ],

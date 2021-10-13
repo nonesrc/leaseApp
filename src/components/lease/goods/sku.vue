@@ -166,7 +166,6 @@ export default defineComponent({
         return Toast.fail('起始时间大于或等于结束时间！')
       }
       props.closeSheetHandle()
-      console.log(skuToString())
       router.push({
         name: 'check_order',
         params: {

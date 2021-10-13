@@ -2,9 +2,8 @@
   <van-config-provider :theme-vars="themeVars">
     <div class="layout-utils">
       <van-nav-bar
-        title="标题"
+        :title="title"
         left-text="返回"
-        right-text="按钮"
         left-arrow
         @click-left="onClickLeft"
         @click-right="onClickRight"
@@ -15,8 +14,9 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { computed, defineComponent, onMounted } from 'vue'
 import { NavBar, ConfigProvider } from 'vant'
+import router from '../routers'
 export default defineComponent({
   name: 'layout_utils',
   components: {
@@ -29,10 +29,17 @@ export default defineComponent({
       navBarTextColor: '#2c394b',
       navBarIconColor: '#2c394b',
     }
+    // 标题
+    const title = computed(() => {
+      return router.currentRoute.value.meta.title || ''
+    })
     // TEST
-    const onClickLeft = () => {}
+    const onClickLeft = () => {
+      router.go(-1)
+    }
     const onClickRight = () => {}
-    return { themeVars, onClickLeft, onClickRight }
+
+    return { themeVars, title, onClickLeft, onClickRight }
   },
 })
 </script>
