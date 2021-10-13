@@ -40,6 +40,8 @@ export const shopGoodsDetails = {
   sale_type: 0,
   // 是否为商品套装
   is_suit: 0,
+  // 运输费用
+  freight:0,
   // 上架时间
   create_time: new Date().getTime(),
   // 最后编辑时间

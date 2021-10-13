@@ -78,32 +78,36 @@
           </div>
         </div>
       </div>
-      <CheckOrderList />
+      <CheckOrderList
+        :goodsInfo="goodsInfo"
+        :userRecords="userRecords"
+        :skuString="skuString"
+        :isRentGoods="isRentGoods"
+      />
       <van-cell-group>
-        <van-cell
-          title="总价"
-          label="购买商品总价(不包括租赁商品)"
-          :center="true"
-        >
-          <template #value> <Price :amount="1" /> </template
+        <van-cell title="售价" label="非租赁商品" :center="true">
+          <template #value> <Price :amount="0" /> </template
         ></van-cell>
         <van-cell title="运输" label="上门送还花费" :center="true">
           <template #value>
-            <Price :amount="1243" />
+            <Price :amount="transportType !== 'self' ? goodsInfo.freight : 0" />
           </template>
         </van-cell>
-        <van-cell title="押金" label="总押金" :center="true">
+        <van-cell title="押金" label="租赁商品押金" :center="true">
           <template #value>
-            <Price :amount="0" />
+            <Price :amount="goodsInfo.deposit" />
           </template>
         </van-cell>
-        <van-cell title="租赁" label="所有商品租赁计费(元/天)" :center="true">
-          <template #value> <Price :amount="9812" /> </template
+        <van-cell title="租赁" label="商品租赁计费(元/天)" :center="true">
+          <template #value> <Price :amount="goodsInfo.rent_money" /> </template
         ></van-cell>
       </van-cell-group>
       <van-submit-bar
         disabled
-        :price="3050"
+        :price="
+          (isRentGoods ? goodsInfo.deposit : 0) +
+          (transportType !== 'self' ? goodsInfo.freight : 0)
+        "
         :tip="transportType === 'no_self' ? '上门送还需正确填写个人信息' : ''"
         tip-icon="info-o"
         @submit="onSubmitOrder"
@@ -117,7 +121,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, computed } from 'vue'
 import CheckOrderList from './check_order_list.vue'
 import Price from '../../public/price.vue'
 import {
@@ -154,6 +158,25 @@ export default defineComponent({
     Price,
   },
   setup() {
+    // 商品信息
+    const goodsInfo = ref({})
+    // 用户sku信息
+    const userRecords = ref({})
+    // skuString
+    const skuString = ref('')
+    try {
+      let {
+        gooosInfo: goods_info,
+        sku,
+        userRecords: user_records,
+      } = router.currentRoute.value.params
+      goodsInfo.value = JSON.parse(goods_info)
+      skuString.value = sku
+      userRecords.value = JSON.parse(user_records)
+    } catch (error) {
+      router.push({ name: 'lease_sort' })
+    }
+
     // CSS
     const themeVars = {
       badgeBorderWidth: 0,
@@ -178,6 +201,11 @@ export default defineComponent({
         }
       }
     })()
+
+    // 是否是租赁商品
+    const isRentGoods = computed(() => {
+      return goodsInfo.value.hasOwnProperty('deposit')
+    })
     //  联系人微信昵称
     const nick_name = ref('')
     // 联系电话
@@ -185,16 +213,17 @@ export default defineComponent({
     // 地址
     const address = ref('')
 
-    onMounted(() => {
-      console.log(router.currentRoute.value)
-    })
-
     // 提交订单
     const onSubmitOrder = () => {}
+
     return {
       themeVars,
       transportType,
       shopReady,
+      goodsInfo,
+      isRentGoods,
+      userRecords,
+      skuString,
       pickerShopInfo,
       nick_name,
       phone,

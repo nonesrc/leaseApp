@@ -1,16 +1,16 @@
 <template>
   <van-config-provider :theme-vars="themeVars">
     <div class="lease-check-order-list">
-      <!-- 套装示例 -->
       <van-cell :border="false">
         <template #value>
           <van-card
-            num="2"
-            price="2.00"
-            desc="描述信息"
-            title="商品标题"
-            thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
-          />
+            :num="userRecords.count"
+            :desc="skuString"
+            :title="goodsInfo.goods_name"
+            :thumb="goodsInfo.main_img"
+          >
+            <template #price><Price :amount="goodsInfo.deposit" /></template>
+          </van-card>
         </template>
       </van-cell>
       <div class="suit-content" v-if="false">
@@ -38,6 +38,7 @@
 
 <script>
 import { defineComponent } from 'vue'
+import Price from '../../public/price.vue'
 import { Card, Cell, Image as VanImage, ConfigProvider } from 'vant'
 export default defineComponent({
   name: 'lease_check_order_list',
@@ -46,14 +47,38 @@ export default defineComponent({
     [Cell.name]: Cell,
     [VanImage.name]: VanImage,
     [ConfigProvider.name]: ConfigProvider,
+    Price,
   },
-  setup() {
+  props: {
+    goodsInfo: {
+      type: Object,
+      required: false,
+      default: {},
+    },
+    userRecords: {
+      type: Object,
+      required: false,
+      default: {},
+    },
+    skuString: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    isRentGoods: {
+      type: Boolean,
+      required: false,
+      default: 0,
+    },
+  },
+  setup(props) {
     // CSS
     const themeVars = {
       cellVerticalPadding: 0,
       cellHorizontalPadding: 0,
       cardBackgroundColor: '#fff',
     }
+
     return { themeVars }
   },
 })
