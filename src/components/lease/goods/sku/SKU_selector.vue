@@ -29,7 +29,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     // 选择标记
-    const currentSelect = ref(0)
+    const currentSelect = ref(props.recordList[0].id)
     watch(currentSelect, val => {
       ctx.emit('skuChange', val)
     })

@@ -52,11 +52,6 @@
                 </template>
               </van-cell>
             </van-cell-group>
-            <component
-              :is="SKU['SKU_timer']"
-              @changeBeginTime="changeBeginTime"
-              @changeEndTime="changeEndTime"
-            ></component>
           </div>
           <div style="padding: 0 10px; margin-top: 20px">
             <van-button
@@ -127,14 +122,6 @@ export default defineComponent({
     const themeVars = {
       actionSheetCancelPaddingTop: 0,
     }
-    // 确认租赁起始时间
-    const changeBeginTime = val => {
-      userRecords.value.beginTime = val
-    }
-    // 确认租赁起始时间
-    const changeEndTime = val => {
-      userRecords.value.endTime = val
-    }
     // 格式化sku展示
     const skuToString = () => {
       const includeSku = currentGoodsSku.value.filter(
@@ -175,8 +162,6 @@ export default defineComponent({
         },
       })
     }
-    userRecords.value.beginTime = 0
-    userRecords.value.endTime = 0
     return {
       SKU,
       themeVars,
@@ -185,8 +170,6 @@ export default defineComponent({
       currentGoodsInfo,
       currentGoodsSku,
       getGoodsSku,
-      changeBeginTime,
-      changeEndTime,
       orderConfirmed,
     }
   },

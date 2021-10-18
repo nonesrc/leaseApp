@@ -13,7 +13,7 @@ const utils = {
     tag: 'utils',
   },
   children: [
-    {
+    {    
       path: 'mine',
       redirect: '/mine',
     },
