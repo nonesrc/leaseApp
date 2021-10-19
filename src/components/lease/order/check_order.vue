@@ -15,15 +15,19 @@
           <!-- no_self -->
           <div class="transport-user" v-if="transportType === 'no_self'">
             <van-cell-group :border="false" inset>
-              <van-field v-model="nick_name" label="收件人" :border="false" />
               <van-field
-                v-model="phone"
+                v-model="userContact.nick_name"
+                label="收件人"
+                :border="false"
+              />
+              <van-field
+                v-model="userContact.phone"
                 type="tel"
                 label="联系电话"
                 :border="false"
               />
               <van-field
-                v-model="address"
+                v-model="userContact.address"
                 rows="2"
                 autosize
                 label="收件人地址"
@@ -77,6 +81,7 @@
             </template>
           </div>
         </div>
+        <DatePicker :transportType="transportType" />
       </div>
       <CheckOrderList
         :goodsInfo="goodsInfo"
@@ -121,8 +126,9 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref, computed } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import CheckOrderList from './check_order_list.vue'
+import DatePicker from './date_picker.vue'
 import Price from '../../public/price.vue'
 import {
   Field,
@@ -156,6 +162,7 @@ export default defineComponent({
     [SubmitBar.name]: SubmitBar,
     CheckOrderList,
     Price,
+    DatePicker,
   },
   setup() {
     // 商品信息
@@ -190,6 +197,7 @@ export default defineComponent({
     const shopReady = ref(false)
     // 自取商铺信息
     const pickerShopInfo = ref({})
+
     !(async () => {
       if (!shopReady.value) {
         const { success, data } = axiosDataResolveHandle(
@@ -206,13 +214,12 @@ export default defineComponent({
     const isRentGoods = computed(() => {
       return goodsInfo.value.hasOwnProperty('deposit')
     })
-    //  联系人微信昵称
-    const nick_name = ref('')
-    // 联系电话
-    const phone = ref('')
-    // 地址
-    const address = ref('')
-
+    // no_self用户联系信息
+    const userContact = ref({
+      nick_name: '',
+      phone: '',
+      address: '',
+    })
     // 提交订单
     const onSubmitOrder = () => {}
 
@@ -225,9 +232,7 @@ export default defineComponent({
       userRecords,
       skuString,
       pickerShopInfo,
-      nick_name,
-      phone,
-      address,
+      userContact,
       onSubmitOrder,
     }
   },
