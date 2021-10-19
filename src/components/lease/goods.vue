@@ -19,16 +19,13 @@
           >
           <template #label>
             <div class="goods-price">
-              <span>价格: </span>
-              ¥ {{ resolveMoney(currentGoodsDetails._showPrice) }}
+              ¥ {{ resolveMoney(currentGoodsDetails._showPrice) }}/{{
+                currentGoodsDetails.unit
+              }}
             </div>
             <div class="goods-deposit">
-              <span>押金: </span>
-              ¥ {{ resolveMoney(currentGoodsDetails.deposit) }}
-            </div>
-            <div class="goods-unit">
-              <span>单位: </span>
-              {{ currentGoodsDetails.unit }}
+              <span>押金</span>
+              {{ resolveMoney(currentGoodsDetails.deposit) }}
             </div>
           </template>
         </van-cell>
@@ -182,16 +179,11 @@ export default defineComponent({
     margin-bottom: $g-1;
   }
   .goods-deposit,
-  .goods-price,
-  .goods-unit {
+  .goods-price {
     color: $color-g-2;
-    font-size: 18px;
-    font-weight: bolder;
+    font-size: 17px;
     margin-bottom: math.div($g-1, 2);
-    span {
-      font-size: 14px;
-    }
-    &.goods-unit,
+
     &.goods-deposit {
       color: $font-color-6;
       font-size: 14px;
