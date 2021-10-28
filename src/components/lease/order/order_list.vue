@@ -24,12 +24,23 @@
             <div class="buttom">
               <div class="price">
                 <Price :amount="order.order_price" /><span
+                  :class="{ 'has-mr': [0, 4].includes(order.order_status) }"
                   >x{{ order.count }}</span
                 >
               </div>
               <div class="operation">
-                <van-button color="#2c394b" size="mini">操作</van-button>
-                <van-button color="#2c394b" size="mini">操作</van-button>
+                <van-button
+                  v-if="order.order_status === 0"
+                  color="#2c394b"
+                  size="mini"
+                  >支付</van-button
+                >
+                <van-button
+                  v-if="order.order_status === 4"
+                  color="#2c394b"
+                  size="mini"
+                  >续租</van-button
+                >
               </div>
             </div>
           </template>
@@ -79,7 +90,7 @@ export default defineComponent({
     const finished = ref(false)
     const refreshing = ref(false)
     const page = ref(1)
-
+    // 重新加载数据
     const onLoad = async () => {
       if (refreshing.value) {
         page.value = 1
@@ -146,7 +157,9 @@ export default defineComponent({
         & > span {
           display: inline-block;
           margin-left: auto;
-          margin-right: $g-2;
+          &.has-mr {
+            margin-right: $g-1;
+          }
         }
       }
       .operation {
