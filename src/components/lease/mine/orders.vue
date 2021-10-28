@@ -1,6 +1,11 @@
 <template>
   <div class="lease-orders">
-    <van-search v-model="searchValue" placeholder="请输入搜索关键词">
+    <van-search
+      v-model="searchValue"
+      placeholder="请输入搜索关键词"
+      @search="searchValue_ = searchValue"
+      @blur="searchValue_ = searchValue"
+    >
       <template #left>
         <van-popover
           v-model:show="showFilter"
@@ -21,12 +26,25 @@
       title-inactive-color="#082032"
       color="#082032"
     >
-      <van-tab title="已完成" name="completed"> </van-tab>
-      <van-tab title="准备中" name="preparing"></van-tab>
-      <van-tab title="待付款" name="pending-pay"></van-tab>
+      <van-tab title="待付款"> </van-tab>
+      <van-tab title="备货中"> </van-tab>
+      <van-tab title="待自提"> </van-tab>
+      <van-tab title="配送中"> </van-tab>
+      <van-tab title="待退还"> </van-tab>
+      <van-tab title="待退押金"> </van-tab>
+      <van-tab title="已完成"> </van-tab>
     </van-tabs>
+
     <div class="order-content">
-      <OrderList />
+      <OrderList
+        :keyword="searchValue_"
+        :orderType="activeTab"
+        :sortType="
+          ['all', 'rent', 'sell'][
+            filterActions.map(t => t.text).indexOf(filterValue)
+          ]
+        "
+      />
     </div>
   </div>
 </template>
@@ -49,6 +67,7 @@ export default defineComponent({
   setup() {
     // 搜索内容
     const searchValue = ref('')
+    const searchValue_ = ref('')
     // 过滤
     const showFilter = ref(false)
     const filterActions = [
@@ -59,10 +78,11 @@ export default defineComponent({
     const filterValue = ref(filterActions[0].text)
     const onFilterSelect = action => (filterValue.value = action.text)
     // 当前活跃Tabs
-    const activeTab = ref('completed')
+    const activeTab = ref(0)
     return {
       activeTab,
       searchValue,
+      searchValue_,
       showFilter,
       filterActions,
       filterValue,

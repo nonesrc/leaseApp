@@ -8,105 +8,155 @@
         @load="onLoad"
       >
         <van-card
-          num="2"
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
-          thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
-        />
-        <van-card
-          num="2"
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
-          thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
-        />
-        <van-card
-          num="2"
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
-          thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
-        />
-        <van-card
-          num="2"
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
-          thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
-        />
-        <van-card
-          num="2"
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
-          thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
-        />
+          v-for="order in currentOrderList"
+          :key="order.order_id"
+          :desc="order.sku_string"
+          :title="order.goods_name"
+          :thumb="order.main_img"
+          @click="
+            router.push({
+              name: 'orders_details',
+              query: { order_id: order.order_id },
+            })
+          "
+        >
+          <template #bottom>
+            <div class="buttom">
+              <div class="price">
+                <Price :amount="order.order_price" /><span
+                  >x{{ order.count }}</span
+                >
+              </div>
+              <div class="operation">
+                <van-button color="#2c394b" size="mini">操作</van-button>
+                <van-button color="#2c394b" size="mini">操作</van-button>
+              </div>
+            </div>
+          </template>
+        </van-card>
       </van-list>
     </van-pull-refresh>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import { List, PullRefresh, Card } from 'vant'
+import { defineComponent, ref, watch, unref } from 'vue'
+import { getOrder_API } from '../../../api'
+import { axiosDataResolveHandle } from '../../../utils/helper'
+import Price from '../../public/price.vue'
+import router from '../../../routers'
+import { List, PullRefresh, Card, Button } from 'vant'
 export default defineComponent({
   name: 'lease_order_list',
   components: {
     [List.name]: List,
     [PullRefresh.name]: PullRefresh,
     [Card.name]: Card,
+    [Button.name]: Button,
+    Price,
   },
-  setup() {
-    const list = ref([])
+  props: {
+    sortType: {
+      type: String,
+      required: false,
+      default: 'all',
+    },
+    orderType: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    keyword: {
+      type: String,
+      required: false,
+      default: '',
+    },
+  },
+  setup(props) {
+    // 当前商品列表
+    const currentOrderList = ref([])
     const loading = ref(false)
     const finished = ref(false)
     const refreshing = ref(false)
+    const page = ref(1)
 
-    const onLoad = () => {
-      setTimeout(() => {
-        if (refreshing.value) {
-          list.value = []
-          refreshing.value = false
-        }
-
-        for (let i = 0; i < 10; i++) {
-          list.value.push(list.value.length + 1)
-        }
-        loading.value = false
-
-        if (list.value.length >= 40) {
-          finished.value = true
-        }
-      }, 1000)
+    const onLoad = async () => {
+      if (refreshing.value) {
+        page.value = 1
+        currentOrderList.value = []
+        refreshing.value = false
+      }
+      const { success, data } = axiosDataResolveHandle(
+        await getOrder_API(
+          props.keyword,
+          props.orderType,
+          props.sortType,
+          unref(page),
+          5
+        )
+      )
+      page.value++
+      if (success) {
+        currentOrderList.value.push(...data)
+      }
+      loading.value = false
+      if (!success || data.length < 5) {
+        finished.value = true
+      }
     }
 
     const onRefresh = () => {
-      // 清空列表数据
       finished.value = false
-
-      // 重新加载数据
-      // 将 loading 设置为 true，表示处于加载状态
       loading.value = true
       onLoad()
     }
-
+    watch(
+      () => [props.sortType, props.orderType, props.keyword],
+      () => {
+        refreshing.value = true
+        onLoad()
+      }
+    )
     return {
-      list,
+      currentOrderList,
       onLoad,
       loading,
       finished,
       onRefresh,
       refreshing,
+      router,
     }
   },
 })
 </script>
 
 <style lang="scss">
+@use 'sass:math';
+@import '../../../assets/styles/index.scss';
 .lease-order-list {
-  .van-list{
+  .van-list {
     min-height: calc(100vh - 144px);
+    .buttom {
+      display: flex;
+      align-items: center;
+      .price {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        & > span {
+          display: inline-block;
+          margin-left: auto;
+          margin-right: $g-2;
+        }
+      }
+      .operation {
+        display: flex;
+        justify-content: flex-end;
+        .van-button {
+          min-width: 50px;
+        }
+      }
+    }
   }
 }
 </style>

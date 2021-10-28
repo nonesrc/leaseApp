@@ -12,7 +12,7 @@ export const shopGoodsOverview = {
   goods_name: '',
   // 单位/量纲
   unit: '',
-  // 主图片 id
+  // 主图片地址
   main_img: '',
 }
 
