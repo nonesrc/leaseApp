@@ -81,7 +81,9 @@
         @submit="onSubmitOrder"
       >
         <template #button>
-          <div class="submit-order-btn">提交订单</div>
+          <div class="submit-order-btn" @click="router.push({ name: 'pay' })">
+            提交订单
+          </div>
         </template>
       </van-submit-bar>
     </div>
@@ -158,7 +160,6 @@ export default defineComponent({
     const shopReady = ref(false)
     // 自取商铺信息
     const pickerShopInfo = ref({})
-
     !(async () => {
       if (!shopReady.value) {
         const { success, data } = axiosDataResolveHandle(
@@ -170,7 +171,6 @@ export default defineComponent({
         }
       }
     })()
-
     // 是否是租赁商品
     const isRentGoods = computed(() => {
       return goodsInfo.value.hasOwnProperty('deposit')
@@ -183,7 +183,6 @@ export default defineComponent({
     })
     // 提交订单
     const onSubmitOrder = () => {}
-
     return {
       themeVars,
       transportType,
@@ -195,6 +194,7 @@ export default defineComponent({
       pickerShopInfo,
       userContact,
       onSubmitOrder,
+      router,
     }
   },
 })

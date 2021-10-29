@@ -56,7 +56,7 @@ export default defineComponent({
   .banner {
     height: 200px;
     background: $color-g-2;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
     margin-bottom: 100px;
   }
   .btn {
