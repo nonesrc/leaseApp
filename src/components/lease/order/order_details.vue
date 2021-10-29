@@ -51,8 +51,15 @@
       ></van-cell>
     </van-cell-group>
     <div class="btn-group">
-      <van-button block round color="#334756">立即支付</van-button>
-      <van-button block round color="#334756">申请退款</van-button>
+      <van-button
+        block
+        round
+        color="#334756"
+        v-if="[0].includes(parseInt(order_status))"
+        >立即支付</van-button
+      >
+      <!-- 暂时不做退款 -->
+      <!-- <van-button block round color="#334756">申请退款</van-button> -->
     </div>
   </div>
 </template>
@@ -155,9 +162,11 @@ export default defineComponent({
     }
     span:nth-child(2),
     span:nth-child(3) {
-      font-size: 14px;
+      letter-spacing: 0.5px;
+      font-size: 17px;
     }
     span:nth-child(3) {
+      font-size: 12px;
       margin-top: $g-1;
     }
   }
