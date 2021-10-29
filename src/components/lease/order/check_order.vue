@@ -44,7 +44,10 @@
             /></template>
           </div>
         </div>
-        <DatePicker :transportType="transportType" />
+        <DatePicker
+          :transportType="transportType"
+          :dateList="pickerShopInfo.time_range"
+        />
       </div>
       <CheckOrderList
         :goodsInfo="goodsInfo"

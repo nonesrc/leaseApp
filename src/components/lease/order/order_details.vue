@@ -1,10 +1,10 @@
 <template>
   <div class="lease-order-details">
     <div class="banner flexc">
-      <van-icon name="success" /> <span>交易完成</span
-      ><span>订单编号:11231241241</span>
+      <van-icon :name="ORDER_STATUS[order_status].icon" />
+      <span>{{ ORDER_STATUS[order_status].tip }}</span
+      ><span>订单编号: {{ order_id }}</span>
     </div>
-
     <div class="transport-content">
       <!-- no_self -->
       <div class="transport-user" v-if="transportType === 'no_self'">
@@ -20,37 +20,9 @@
       </div>
       <!-- self -->
       <div class="transport-shop" v-else-if="transportType === 'self'">
-        <van-loading :vertical="true" v-if="!shopReady" />
+        <van-loading :vertical="true" v-if="!isReady" />
         <template v-else>
-          <section class="shop-overview">
-            <van-image
-              src="http://dummyimage.com/150x150/3498db/png&text=deelter"
-              height="80"
-              width="80"
-              fit="cover"
-            >
-              <template v-slot:loading>
-                <van-loading size="20" :vertical="true" />
-              </template>
-            </van-image>
-            <div class="shop-status">
-              <div class="van-ellipsis">deelter 专卖店（成信店）</div>
-              <div>
-                <van-tag color=" #27ae60">营业中</van-tag>
-              </div>
-              <div>
-                <van-icon name="phone" />
-                17384756534 deelter
-              </div>
-            </div>
-          </section>
-          <van-field
-            v-model="texts"
-            rows="1"
-            type="textarea"
-            autosize
-            disabled
-          />
+          <ShopCard :pickerShopInfo="transporInfo.meta" />
         </template>
       </div>
     </div>
@@ -86,9 +58,13 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import Price from '../../public/price.vue'
 import CheckOrderList from './check_order_list.vue'
+import ShopCard from '../shop/shop_card.vue'
+import { testGetPerPayOrderDetails_API } from '../../../api'
+import { axiosDataResolveHandle } from '../../../utils/helper'
+import { ORDER_STATUS } from '../../../utils/config'
 import {
   Icon,
   Cell,
@@ -99,6 +75,7 @@ import {
   Field,
   Button,
 } from 'vant'
+import router from '../../../routers'
 export default defineComponent({
   name: 'lease_order_details',
   components: {
@@ -112,16 +89,45 @@ export default defineComponent({
     [Button.name]: Button,
     CheckOrderList,
     Price,
+    ShopCard,
   },
   setup() {
-    // 自取商店是否准备完成
-    const shopReady = ref(true)
+    // 订单编号
+    const order_id = router.currentRoute.value.query.order_id || undefined
+    // 订单状态
+    const order_status =
+      router.currentRoute.value.query.order_status || undefined
+    // 订单信息是否准备完成
+    const isReady = ref(false)
     // 当前商品运输类型
     const transportType = ref('self')
+    // 运输信息
+    const transporInfo = ref({})
+    // 商品信息
+    const orderInfo = ref({})
+    onMounted(async () => {
+      if (order_id && order_status) {
+        const { success, data } = axiosDataResolveHandle(
+          await testGetPerPayOrderDetails_API(order_id)
+        )
+        if (success) {
+          transporInfo.value = data.transport
+          orderInfo.value = data.order
+          console.log(transporInfo.value.meta)
+          isReady.value = true
+        }
+      } else router.push({ name: 'orders' })
+    })
 
-    // TEST
-    const texts = ref('成都信息工程大学 二食堂二楼')
-    return { shopReady, transportType, texts }
+    return {
+      ORDER_STATUS,
+      order_id,
+      order_status,
+      isReady,
+      transportType,
+      transporInfo,
+      orderInfo,
+    }
   },
 })
 </script>
@@ -158,8 +164,7 @@ export default defineComponent({
   .transport-content {
     padding-top: $g-1;
     .transport-shop {
-      margin: 0 $g-2;
-      padding: $g-1;
+      padding: 0 $g-1;
       background: #fff;
       border-radius: 10px;
       .shop-overview {

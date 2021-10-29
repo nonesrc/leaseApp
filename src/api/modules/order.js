@@ -11,13 +11,13 @@ const DEV_MODE = import.meta.env.VITE_MODE === 'DEV'
  * @param {number} count 每页包含条目
  * @returns
  */
-export function getOrder_API(keyworld, order_type, order_sort, page, count) {
+export function getOrder_API(keyworld, order_status, order_sort, page, count) {
   return ARFactory({
-    url: DEV_MODE ? '/api/auth/order' : '',
+    url: DEV_MODE ? '/api/auth/order/list' : '',
     method: 'GET',
     params: {
       keyworld,
-      order_type,
+      order_status,
       order_sort,
       page,
       count,

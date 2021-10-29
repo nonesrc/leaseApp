@@ -38,7 +38,7 @@
     <div class="order-content">
       <OrderList
         :keyword="searchValue_"
-        :orderType="activeTab"
+        :orderStatus="activeTab"
         :sortType="
           ['all', 'rent', 'sell'][
             filterActions.map(t => t.text).indexOf(filterValue)

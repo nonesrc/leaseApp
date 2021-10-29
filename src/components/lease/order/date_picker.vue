@@ -65,14 +65,13 @@ export default defineComponent({
       required: true,
       default: 'self',
     },
+    dateList: {
+      type: Array,
+      required: false,
+      default: [],
+    },
   },
   setup() {
-    // 可选日期列表
-    const dateList = [
-      { text: '18:30-11:00', disabled: false },
-      { text: '12:30-13:30', disabled: false },
-      { text: '14:30-18:30', disabled: false },
-    ]
     // 用户选择日期
     const datePicked = ref()
     const timePicked = ref(-1)
@@ -86,7 +85,6 @@ export default defineComponent({
       showDate.value = false
     }
     return {
-      dateList,
       onConfirmTime,
       datePicked,
       timePicked,

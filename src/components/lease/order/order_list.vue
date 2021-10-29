@@ -16,7 +16,10 @@
           @click="
             router.push({
               name: 'orders_details',
-              query: { order_id: order.order_id },
+              query: {
+                order_id: order.order_id,
+                order_status: order.order_status,
+              },
             })
           "
         >
@@ -72,7 +75,7 @@ export default defineComponent({
       required: false,
       default: 'all',
     },
-    orderType: {
+    orderStatus: {
       type: Number,
       required: false,
       default: 0,
@@ -100,7 +103,7 @@ export default defineComponent({
       const { success, data } = axiosDataResolveHandle(
         await getOrder_API(
           props.keyword,
-          props.orderType,
+          props.orderStatus,
           props.sortType,
           unref(page),
           5
@@ -122,7 +125,7 @@ export default defineComponent({
       onLoad()
     }
     watch(
-      () => [props.sortType, props.orderType, props.keyword],
+      () => [props.sortType, props.orderStatus, props.keyword],
       () => {
         refreshing.value = true
         onLoad()
