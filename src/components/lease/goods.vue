@@ -19,13 +19,15 @@
           >
           <template #label>
             <div class="goods-price">
-              ¥ {{ resolveMoney(currentGoodsDetails._showPrice) }}/{{
-                currentGoodsDetails.unit
-              }}
-            </div>
-            <div class="goods-deposit">
-              <span>押金</span>
-              {{ resolveMoney(currentGoodsDetails.deposit) }}
+              <Price
+                :amount="currentGoodsDetails._showPrice"
+                :unit="currentGoodsDetails.unit"
+              />
+              <Price
+                :amount="currentGoodsDetails.deposit"
+                :fontSise="12"
+                :fontColor="'#6c757d'"
+              />
             </div>
           </template>
         </van-cell>
@@ -107,6 +109,8 @@ import useGoods from '../../composable/goods'
 import router from '../../routers'
 import { resolveMoney } from '../../utils/helper'
 import Sku from './goods/sku.vue'
+import Price from '../public/price.vue'
+
 export default defineComponent({
   name: 'lease_goods',
   components: {
@@ -124,6 +128,7 @@ export default defineComponent({
     [Loading.name]: Loading,
     [ConfigProvider.name]: ConfigProvider,
     Sku,
+    Price,
   },
   setup() {
     const {
@@ -178,15 +183,13 @@ export default defineComponent({
     margin-top: math.div($g-1, 2);
     margin-bottom: $g-1;
   }
-  .goods-deposit,
   .goods-price {
+    display: flex;
     color: $color-g-2;
     font-size: 17px;
     margin-bottom: math.div($g-1, 2);
-
-    &.goods-deposit {
-      color: $font-color-6;
-      font-size: 14px;
+    & > *:nth-child(2) {
+      margin-left: auto;
     }
   }
   .shop-name {

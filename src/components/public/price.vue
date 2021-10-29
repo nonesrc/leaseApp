@@ -6,6 +6,7 @@
     <span class="flag" v-show="showFlag">¥</span
     ><span class="M-1">{{ beautifyMoney[0] }}</span
     >.<span class="M-2">{{ beautifyMoney[1] }}</span>
+    <span class="unit">{{ Boolean(unit) ? ' /' + unit : '' }}</span>
   </div>
 </template>
 
@@ -33,6 +34,11 @@ export default defineComponent({
       type: String,
       required: false,
       default: '#2c394b',
+    },
+    unit: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
   setup(props) {

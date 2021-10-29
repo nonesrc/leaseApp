@@ -3,7 +3,7 @@
     <div class="lease-sku">
       <van-action-sheet
         v-model:show="showSheet"
-        :round="false"
+        :round="true"
         :close-on-click-overlay="false"
         @click-overlay="closeSheetHandle"
         @opened="() => !skuReady && getGoodsSku()"
@@ -16,6 +16,7 @@
               :alt="currentGoodsInfo.goods_name"
               width="80"
               height="80"
+              radius="5"
             >
               <template v-slot:loading>
                 <van-loading type="spinner" size="20" :vertical="true" />
@@ -185,6 +186,7 @@ export default defineComponent({
     padding-bottom: $g-1;
   }
   .sku-box {
+    margin-top: math.div($g-1, 2);
     .goods-info {
       box-sizing: border-box;
       display: flex;
