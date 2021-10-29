@@ -40,45 +40,8 @@
           <div class="transport-shop" v-else-if="transportType === 'self'">
             <van-loading :vertical="true" v-if="!shopReady" />
             <template v-else>
-              <section class="shop-overview">
-                <van-image
-                  src="http://dummyimage.com/150x150/3498db/png&text=deelter"
-                  height="80"
-                  width="80"
-                  fit="cover"
-                >
-                  <template v-slot:loading>
-                    <van-loading size="20" :vertical="true" />
-                  </template>
-                </van-image>
-                <div class="shop-status">
-                  <div class="van-ellipsis">{{ pickerShopInfo.shop_name }}</div>
-                  <div>
-                    <van-tag
-                      :color="
-                        pickerShopInfo.in_business ? '#27ae60' : '#2c394b'
-                      "
-                      >{{
-                        pickerShopInfo.in_business ? '营业中' : '已休业'
-                      }}</van-tag
-                    >
-                  </div>
-                  <div>
-                    <van-icon name="phone" />
-                    {{ pickerShopInfo.shop_contact }} ({{
-                      pickerShopInfo.shop_owner
-                    }})
-                  </div>
-                </div>
-              </section>
-              <van-field
-                v-model="pickerShopInfo.shop_address"
-                rows="1"
-                type="textarea"
-                autosize
-                disabled
-              />
-            </template>
+              <ShopCard :pickerShopInfo="pickerShopInfo"
+            /></template>
           </div>
         </div>
         <DatePicker :transportType="transportType" />
@@ -130,6 +93,7 @@ import { defineComponent, ref, computed } from 'vue'
 import CheckOrderList from './check_order_list.vue'
 import DatePicker from './date_picker.vue'
 import Price from '../../public/price.vue'
+import ShopCard from '../shop/shop_card.vue'
 import {
   Field,
   CellGroup,
@@ -139,8 +103,6 @@ import {
   Image as VanImage,
   Loading,
   ConfigProvider,
-  Tag,
-  Icon,
   SubmitBar,
 } from 'vant'
 import { getPickerShop_API } from '../../../api'
@@ -157,12 +119,11 @@ export default defineComponent({
     [VanImage.name]: VanImage,
     [Loading.name]: Loading,
     [ConfigProvider.name]: ConfigProvider,
-    [Tag.name]: Tag,
-    [Icon.name]: Icon,
     [SubmitBar.name]: SubmitBar,
     CheckOrderList,
     Price,
     DatePicker,
+    ShopCard,
   },
   setup() {
     // 商品信息
@@ -254,26 +215,6 @@ export default defineComponent({
         padding: $g-1;
         background: #fff;
         border-radius: 10px;
-        .shop-overview {
-          display: flex;
-          .shop-status {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-            margin-left: $g-1;
-            flex-grow: 1;
-            color: $font-color-7;
-            div:nth-child(1) {
-              font-size: 15px;
-              font-weight: bold;
-            }
-            div:nth-child(3) {
-              margin-top: $g-1;
-              font-size: 13px;
-              color: $font-color-6;
-            }
-          }
-        }
         .van-cell {
           padding: 0;
           padding-top: $g-1;

@@ -66,3 +66,24 @@ export function axiosDataResolveHandle(
 export function resolveMoney(count) {
   return (count / 100).toFixed(2)
 }
+
+/**
+ * 检查商铺合法性
+ * @param {Object} param0 商铺信息
+ * @returns
+ */
+export function checkShopValid({
+  shop_id,
+  shop_name,
+  shop_owner,
+  shop_contact,
+  shop_address,
+}) {
+  return (
+    Boolean(shop_id) &&
+    Boolean(shop_name) &&
+    Boolean(shop_owner) &&
+    Boolean(shop_contact) &&
+    Boolean(shop_address)
+  )
+}

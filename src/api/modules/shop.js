@@ -16,3 +16,14 @@ export function getPickerShop_API(goods_id) {
     },
   })
 }
+
+/**
+ * 获取全部自提点
+ * @returns
+ */
+export function getShopList_API() {
+  return ARFactory({
+    url: DEV_MODE ? '/api/public/shop/list' : '',
+    method: 'GET',
+  })
+}
