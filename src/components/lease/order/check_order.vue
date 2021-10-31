@@ -48,6 +48,14 @@
           :transportType="transportType"
           :dateList="pickerShopInfo.time_range"
         />
+        <van-cell-group inset class="user-remarks">
+          <van-field
+            v-model="userRemarks"
+            autosize
+            label="备注"
+            type="textarea"
+            :border="false"
+        /></van-cell-group>
       </div>
       <CheckOrderList
         :goodsInfo="goodsInfo"
@@ -131,6 +139,13 @@ export default defineComponent({
     ShopCard,
   },
   setup() {
+    // CSS
+    const themeVars = {
+      badgeBorderWidth: 0,
+      submitBarTipBackgroundColor: '#adb5bd',
+      submitBarTipColor: '#2c394b',
+      submitBarPriceColor: '#2c394b',
+    }
     // 商品信息
     const goodsInfo = ref({})
     // 用户sku信息
@@ -149,20 +164,13 @@ export default defineComponent({
     } catch (error) {
       router.push({ name: 'lease_sort' })
     }
-
-    // CSS
-    const themeVars = {
-      badgeBorderWidth: 0,
-      submitBarTipBackgroundColor: '#adb5bd',
-      submitBarTipColor: '#2c394b',
-      submitBarPriceColor: '#2c394b',
-    }
     // 用户选择运输类型
     const transportType = ref('self')
     // 自取商铺是否准备完成
     const shopReady = ref(false)
     // 自取商铺信息
     const pickerShopInfo = ref({})
+    // 获取自取商铺信息
     !(async () => {
       if (!shopReady.value) {
         const { success, data } = axiosDataResolveHandle(
@@ -184,6 +192,8 @@ export default defineComponent({
       phone: '',
       address: '',
     })
+    // 备注
+    const userRemarks = ref('')
     // 提交订单
     const onSubmitOrder = () => {}
     return {
@@ -196,6 +206,7 @@ export default defineComponent({
       skuString,
       pickerShopInfo,
       userContact,
+      userRemarks,
       onSubmitOrder,
       router,
     }
@@ -223,6 +234,9 @@ export default defineComponent({
           padding-top: $g-1;
         }
       }
+    }
+    .user-remarks {
+      margin-top: $g-1;
     }
   }
   .submit-order-btn {
