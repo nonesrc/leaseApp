@@ -1,3 +1,6 @@
+import { Toast, Dialog } from 'vant'
+import router from '../routers'
+
 /**
  * 格式化时间
  * @param {string} fmt 格式
@@ -46,10 +49,21 @@ export function axiosDataResolveHandle(
     success = _SUCCESS
     msg = _MSG
     data = _DATA
+    success && successHandle()
   } catch (error) {
-    throw new Error('发生错误')
+    failHandle()
+    console.warn(error)
   }
-  success ? successHandle() : failHandle()
+  // if (!success && code === 4003) {
+  Dialog.alert({
+    message: '暂未登录，请先登录',
+    theme: 'round-button',
+    confirmButtonColor: '#2c394b',
+  }).then(() => {
+    location.replace(loginGenerator())
+  })
+  // }
+
   return {
     code,
     success,
@@ -86,4 +100,15 @@ export function checkShopValid({
     Boolean(shop_contact) &&
     Boolean(shop_address)
   )
+}
+
+export function loginGenerator(redirect_uri = 'http://192.168.3.7:3000/sort') {
+  const baseUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?'
+  const params = new URLSearchParams()
+  params.set('appid', 'wx56e53ff5ed0b2046')
+  params.set('redirect_uri', redirect_uri)
+  params.set('response_type', 'code')
+  params.set('scope', 'snsapi_userinfo')
+  params.set('state', 'STATE')
+  return baseUrl + params.toString() + '#wechat_redirect'
 }

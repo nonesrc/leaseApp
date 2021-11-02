@@ -3,6 +3,14 @@ export const BASE_API =
     ? 'http://rap2api.taobao.org/app/mock/291472/'
     : ''
 
+// 请求状态码
+export const REQUEST_CODE = {
+  2000: '操作成功！',
+  3000: '操作失败！',
+  4003: '身份验证失败！',
+  4004: '操作权限不足',
+  5000: '服务器发生未知错误！',
+}
 // 订单状态
 export const ORDER_STATUS = {
   0: {
