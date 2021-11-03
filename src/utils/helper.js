@@ -1,5 +1,5 @@
-import { Toast, Dialog } from 'vant'
-import router from '../routers'
+import { APP_ID, BASE_URL } from './config'
+import { Dialog } from 'vant'
 
 /**
  * 格式化时间
@@ -102,13 +102,14 @@ export function checkShopValid({
   )
 }
 
-export function loginGenerator(redirect_uri = 'http://192.168.3.7:3000/sort') {
-  const baseUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?'
+export function loginGenerator(redirect = 'sort') {
+  const authBaseUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?'
+  const redirectBaseUrl = BASE_URL + 'login?'
   const params = new URLSearchParams()
-  params.set('appid', 'wx56e53ff5ed0b2046')
-  params.set('redirect_uri', redirect_uri)
+  params.set('appid', APP_ID)
+  params.set('redirect_uri', redirectBaseUrl + redirect)
   params.set('response_type', 'code')
   params.set('scope', 'snsapi_userinfo')
   params.set('state', 'STATE')
-  return baseUrl + params.toString() + '#wechat_redirect'
+  return authBaseUrl + params.toString() + '#wechat_redirect'
 }

@@ -3,6 +3,9 @@ export const BASE_API =
     ? 'http://rap2api.taobao.org/app/mock/291472/'
     : ''
 
+export const APP_ID = 'wx56e53ff5ed0b2046'
+export const BASE_URL = 'http://192.168.3.7:3000/'
+
 // 请求状态码
 export const REQUEST_CODE = {
   2000: '操作成功！',
