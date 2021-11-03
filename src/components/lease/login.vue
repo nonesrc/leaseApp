@@ -8,7 +8,7 @@ import router from '../../routers'
 import { userLogin_API } from '../../api'
 import { axiosDataResolveHandle } from '../../utils/helper'
 import { coreStateKey } from '../../state'
-import { Empty, Toast } from 'vant'
+import { Empty } from 'vant'
 
 export default defineComponent({
   name: 'lease_login',
@@ -23,10 +23,16 @@ export default defineComponent({
     } = inject(coreStateKey)
     const { code } = router.currentRoute.value.query
     onMounted(async () => {
+      const token = localStorage.getItem('Authorization')
+      if (token) {
+      }
       const { success, data } = axiosDataResolveHandle(
         await userLogin_API(code)
       )
       if (success) {
+        localStorage.setItem('Authorization', data.token)
+        delete data.token
+        console.log(data)
         reCurrentUser(data)
       }
     })

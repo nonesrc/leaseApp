@@ -4,7 +4,7 @@ export const BASE_API =
     : ''
 
 export const APP_ID = 'wx56e53ff5ed0b2046'
-export const BASE_URL = 'http://192.168.3.7:3000/'
+export const BASE_URL = 'http://192.168.43.134:3000/'
 
 // 请求状态码
 export const REQUEST_CODE = {
