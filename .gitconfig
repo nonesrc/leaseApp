@@ -1,8 +1,0 @@
-[user]
-  name = zrain
-  email = 2296342883@qq.com
-  signingkey = 72FDD8A1C5EF98C0
-[gpg]
-  program = C:\\git\\Git\\usr\\bin\\gpg.exe
-[commit]
-  gpgsign = true
