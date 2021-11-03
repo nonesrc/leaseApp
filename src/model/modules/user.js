@@ -8,7 +8,7 @@ export const shopUser = {
   // 用户性别
   sex: '',
   // 微信头像 URL
-  avatar_ur: '',
+  avatar_url: '',
   // 注册时间
   register_time: new Date().getTime(),
   // 账户状态（0-正常，1-锁定）
