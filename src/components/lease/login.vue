@@ -24,8 +24,6 @@ export default defineComponent({
     const { code } = router.currentRoute.value.query
     onMounted(async () => {
       const token = localStorage.getItem('Authorization')
-      if (token) {
-      }
       const { success, data } = axiosDataResolveHandle(
         await userLogin_API(code)
       )
