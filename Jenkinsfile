@@ -10,6 +10,7 @@ pipeline {
                 git branch: 'dev', credentialsId: 'bec34d29-6cf2-408d-8ed1-cf279cf6f5aa', url: 'git@github.com:nonesrc/rentApp.git'
             }
         }
+
         stage('构建') {
             steps {
                 nodejs('node16.13.0') {
@@ -21,12 +22,21 @@ pipeline {
                 }
             }
         }
+
         stage('部署'){
             steps{
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'rantServer', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''echo `pwd`
-                            cd /www/wwwroot/shop.dreamlongclothes.com
-                            tar -zxvf rantAPP.tar.gz
-                            rm -f rantAPP.tar.gz ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'shop.dreamlongclothes.com', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/rantAPP.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                    cd /www/wwwroot/shop.dreamlongclothes.com
+                    tar -zxvf rantAPP.tar.gz
+                    rm -f rantAPP.tar.gz ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'shop.dreamlongclothes.com', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/rantAPP.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            }
+
+            steps{
+                step([$class: 'GitHubCommitStatusSetter'])
+            }
+
+            steps{
+                step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: '2296342883 523340889', sendToIndividuals: false])
             }
                        
         }
