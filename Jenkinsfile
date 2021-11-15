@@ -24,17 +24,26 @@ pipeline {
         }
 
         stage('部署'){
-            steps{
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'rantServer', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''echo `pwd`
-                    cd /www/wwwroot/shop.dreamlongclothes.com
-                    tar -zxvf rantAPP.tar.gz
-                    rm -f rantAPP.tar.gz ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'shop.dreamlongclothes.com', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/rantAPP.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            stages{
+                stage('发送文件'){
+                    steps{
+                        sshPublisher(publishers: [sshPublisherDesc(configName: 'rantServer', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''echo `pwd`
+                            cd /www/wwwroot/shop.dreamlongclothes.com
+                            tar -zxvf rantAPP.tar.gz
+                            rm -f rantAPP.tar.gz ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'shop.dreamlongclothes.com', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/rantAPP.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+                    }
+                }
+                stage('github构建状态通知'){
+                    steps{
+                        step([$class: 'GitHubCommitStatusSetter'])
+                    }
+                }
+                stage('github构建状态通知'){
+                     steps{
+                        step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: '2296342883 523340889', sendToIndividuals: false])
+                    }
+                }
             }
-
-            step([$class: 'GitHubCommitStatusSetter'])
-            
-            step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: '2296342883 523340889', sendToIndividuals: false])
-                       
         }
     }
 }
