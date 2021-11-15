@@ -1,20 +1,21 @@
 pipeline {
     agent any
-
+    
+    triggers {
+        githubPush()
+    }
     stages {
-        stage('Build') {
+        stage('检查仓库') {
             steps {
-                echo 'Building..'
+                git branch: 'dev', credentialsId: 'bec34d29-6cf2-408d-8ed1-cf279cf6f5aa', url: 'git@github.com:nonesrc/rentApp.git'
             }
         }
-        stage('Test') {
+        stage('构建') {
             steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+                nodejs('node16.13.0') {
+                    sh '''npm install
+                        npm run build'''
+                }
             }
         }
     }
