@@ -31,13 +31,9 @@ pipeline {
                     rm -f rantAPP.tar.gz ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'shop.dreamlongclothes.com', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/rantAPP.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
             }
 
-            steps{
-                step([$class: 'GitHubCommitStatusSetter'])
-            }
-
-            steps{
-                step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: '2296342883 523340889', sendToIndividuals: false])
-            }
+            step([$class: 'GitHubCommitStatusSetter'])
+            
+            step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: '2296342883 523340889', sendToIndividuals: false])
                        
         }
     }
