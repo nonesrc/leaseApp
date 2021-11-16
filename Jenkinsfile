@@ -4,6 +4,9 @@ pipeline {
     triggers {
         githubPush()
     }
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10')
+    }
     stages {
         stage('检查仓库') {
             steps {
