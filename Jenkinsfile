@@ -41,8 +41,7 @@ pipeline {
         }
     }
     post {
-        changed {
-            script {
+        always  {
                 emailext subject: '$DEFAULT_SUBJECT',
                     body: '$DEFAULT_CONTENT',
                     recipientProviders: [
@@ -52,7 +51,6 @@ pipeline {
                     ], 
                     replyTo: '$DEFAULT_REPLYTO',
                     to: '$DEFAULT_RECIPIENTS'
-            }
         }
     }
 }
