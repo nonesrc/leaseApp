@@ -40,7 +40,7 @@ pipeline {
             }
         }
         stage('邮件通知'){
-                steps{
+            steps{
                 step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: '2296342883 523340889', sendToIndividuals: false])
             }
         }
