@@ -4,9 +4,11 @@ pipeline {
     triggers {
         githubPush()
     }
+
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10')
     }
+
     stages {
         stage('检查仓库') {
             steps {
@@ -25,21 +27,13 @@ pipeline {
                 }
             }
         }
-
-        stage('发送文件'){
-            steps{
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'rantServer', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''echo `pwd`
-                    cd /www/wwwroot/shop.dreamlongclothes.com
-                    tar -zxvf rantAPP.tar.gz
-                    rm -f rantAPP.tar.gz ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'shop.dreamlongclothes.com', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/rantAPP.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
-            }
-        }
         stage('更改remote构建状态'){
             steps{
                 step([$class: 'GitHubCommitStatusSetter'])
             }
         }
     }
+
     post {
         always  {
             emailext subject: '$DEFAULT_SUBJECT',
@@ -50,7 +44,7 @@ pipeline {
                     [$class: 'RequesterRecipientProvider']
                 ], 
                 replyTo: '$DEFAULT_REPLYTO',
-                to: '$DEFAULT_RECIPIENTS 523340889'
+                to: '$DEFAULT_RECIPIENTS'
         }
     }
 }
