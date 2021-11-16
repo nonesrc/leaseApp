@@ -50,7 +50,7 @@ pipeline {
                     [$class: 'RequesterRecipientProvider']
                 ], 
                 replyTo: '$DEFAULT_REPLYTO',
-                to: '$DEFAULT_RECIPIENTS'
+                to: '$DEFAULT_RECIPIENTS 523340889'
         }
     }
 }
