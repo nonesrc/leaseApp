@@ -45,7 +45,7 @@
       <!-- 商品详情 & 评论 -->
       <van-tabs v-model:active="currentTabs" color="#082032" sticky animated>
         <van-tab name="details">
-          <template #title> <van-icon name="newspaper-o" /> 详情</template>
+          <template #title>详情</template>
           <div class="goods-details-img">
             <van-image
               :src="img"
@@ -62,20 +62,15 @@
           </div>
         </van-tab>
         <van-tab name="comment">
-          <template #title> <van-icon name="comment-o" /> 评论</template>
+          <template #title>评论</template>
         </van-tab>
       </van-tabs>
       <van-action-bar>
         <van-action-bar-icon icon="chat-o" text="客服" />
         <van-action-bar-icon icon="cart-o" text="购物车" />
-        <van-action-bar-button
-          color="#6c757d"
-          type="warning"
-          text="加入购物车"
-        />
+        <van-action-bar-button color="#6c757d" text="加入购物车" />
         <van-action-bar-button
           color="#334756"
-          type="danger"
           text="立即购买"
           @click="isShowSkuSheet = true"
         />

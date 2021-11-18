@@ -55,9 +55,18 @@ import { defineComponent, ref, inject } from 'vue'
 import { coreStateKey } from '../../state'
 import GoodsList from './goods/goods_list.vue'
 import useGoods from '../../composable/goods'
-import { Icon } from '@vicons/utils'
 import { Shirt, Ruler2, ChartBubble, Camera } from '@vicons/tabler'
-import { Tab, Tabs, Sticky, Loading, Grid, GridItem, Toast,ConfigProvider } from 'vant'
+import { Icon } from '@vicons/utils'
+import {
+  Tab,
+  Tabs,
+  Sticky,
+  Loading,
+  Grid,
+  GridItem,
+  Toast,
+  ConfigProvider,
+} from 'vant'
 
 export default defineComponent({
   name: 'lease_sort',

@@ -3,7 +3,8 @@
     class="lease-price"
     :style="`font-size:${fontSise}px;color:${fontColor};`"
   >
-    <span class="flag" v-show="showFlag">¥</span
+    <span class="flag" v-show="showFlag"
+      ><Icon><CurrencyYen /></Icon></span
     ><span class="M-1">{{ beautifyMoney[0] }}</span
     >.<span class="M-2">{{ beautifyMoney[1] }}</span>
     <span class="unit">{{ Boolean(unit) ? ' /' + unit : '' }}</span>
@@ -13,6 +14,9 @@
 <script>
 import { computed, defineComponent } from 'vue'
 import { resolveMoney } from '../../utils/helper'
+import { CurrencyYen } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
+
 export default defineComponent({
   name: 'lease_price',
   props: {
@@ -41,6 +45,10 @@ export default defineComponent({
       default: '',
     },
   },
+  components: {
+    Icon,
+    CurrencyYen,
+  },
   setup(props) {
     const beautifyMoney = computed(() => {
       let monry = resolveMoney(props.amount)
@@ -57,7 +65,7 @@ export default defineComponent({
   font-weight: 500;
   .flag,
   .M-2 {
-    font-size: 0.8em;
+    font-size: 0.9em;
   }
   .M-1 {
     font-size: 1.3em;
