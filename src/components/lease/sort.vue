@@ -201,6 +201,7 @@ export default defineComponent({
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 20px;
   }
 }
 </style>
