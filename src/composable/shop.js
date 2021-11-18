@@ -55,12 +55,12 @@ export default function () {
       rentClothingTypes.value = data.rent
       sellClothingTypes.value = data.sell
       // rentClothingTypes.value = [
-      //   { category_name: '全部', category_id: '' },
       //   ...data.rent,
+      //   { category_name: '全部', category_id: '' },
       // ]
       // sellClothingTypes.value = [
-      //   { category_name: '全部', category_id: '' },
       //   ...data.sell,
+      //   { category_name: '全部', category_id: '' },
       // ]
     }
   }

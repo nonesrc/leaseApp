@@ -49,7 +49,7 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <div class="goods_container">
+        <div class="goods-container">
           <ItemCard
             :goods="goods"
             :sortType="sortType"
@@ -197,10 +197,10 @@ export default defineComponent({
       margin-bottom: math.div($g-1, 2);
     }
   }
-  .goods-list {
-    .van-row:not(:last-child) {
-      margin-bottom: $g-2;
-    }
+  .goods-list .goods-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
 </style>
