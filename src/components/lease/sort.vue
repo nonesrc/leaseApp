@@ -2,16 +2,26 @@
   <div class="lease-sort">
     <van-sticky>
       <section class="selection-taps">
-        <van-tabs
-          v-model:active="sortType"
-          type="card"
-          title-inactive-color="#082032"
-          color="#082032"
-          @click-tab="onChangeSortType"
-        >
-          <van-tab title="服装租赁" name="rent"></van-tab>
-          <van-tab title="服装购买" name="sell"></van-tab>
-        </van-tabs>
+        <van-grid :clickable="true" :border="false">
+          <van-grid-item text="租赁" @click="onChangeSortType('rent')">
+            <template #icon
+              ><Icon size="30"> <Shirt /></Icon> </template
+          ></van-grid-item>
+          <van-grid-item text="定制" @click="onChangeSortType('sell')">
+            <template #icon
+              ><Icon size="30"> <Ruler2 /></Icon> </template
+          ></van-grid-item>
+          <van-grid-item text="清洗" @click="Toast('敬请期待')">
+            <template #icon
+              ><Icon size="30"> <ChartBubble /></Icon>
+            </template>
+          </van-grid-item>
+          <van-grid-item text="摄影" @click="Toast('敬请期待')">
+            <template #icon
+              ><Icon size="30"> <Camera /></Icon>
+            </template>
+          </van-grid-item>
+        </van-grid>
         <transition name="van-fade">
           <div class="clothing-type-tab" style="height: 44px">
             <van-tabs
@@ -43,9 +53,12 @@
 <script>
 import { defineComponent, ref, inject } from 'vue'
 import { coreStateKey } from '../../state'
-import { Tab, Tabs, Sticky, Loading } from 'vant'
 import GoodsList from './goods/goods_list.vue'
 import useGoods from '../../composable/goods'
+import { Icon } from '@vicons/utils'
+import { Shirt, Ruler2, ChartBubble, Camera } from '@vicons/tabler'
+import { Tab, Tabs, Sticky, Loading, Grid, GridItem, Toast,ConfigProvider } from 'vant'
+
 export default defineComponent({
   name: 'lease_sort',
   components: {
@@ -53,7 +66,15 @@ export default defineComponent({
     [Tabs.name]: Tabs,
     [Sticky.name]: Sticky,
     [Loading.name]: Loading,
+    [Grid.name]: Grid,
+    [GridItem.name]: GridItem,
+    [ConfigProvider.name]: ConfigProvider,
     GoodsList,
+    Icon,
+    Shirt,
+    ChartBubble,
+    Camera,
+    Ruler2,
   },
   setup() {
     const {
@@ -73,7 +94,7 @@ export default defineComponent({
     // 租赁服装类型 & 出售服装类型
     const clothingTypes = ref('')
     // 改变商品类型
-    const onChangeSortType = ({ name }) => {
+    const onChangeSortType = name => {
       clearGoodsList()
       getGoodsList(null, null, null, name)
       clothingTypes.value =
@@ -101,6 +122,7 @@ export default defineComponent({
       rentClothingTypes,
       onChangeSortType,
       onChangeClothingTypes,
+      Toast,
     }
   },
 })

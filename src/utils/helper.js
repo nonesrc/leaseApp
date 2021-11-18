@@ -55,15 +55,15 @@ export function axiosDataResolveHandle(
     failHandle()
     console.warn(error)
   }
-  // if (!success && code === 4003) {
-  Dialog.alert({
-    message: '暂未登录，请先登录',
-    theme: 'round-button',
-    confirmButtonColor: '#2c394b',
-  }).then(() => {
-    router.push({ name: 'login' })
-  })
-  // }
+  if (!success && code === 4003) {
+    Dialog.alert({
+      message: '暂未登录，请先登录',
+      theme: 'round-button',
+      confirmButtonColor: '#2c394b',
+    }).then(() => {
+      router.push({ name: 'login' })
+    })
+  }
 
   return {
     code,

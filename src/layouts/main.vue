@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { defineComponent, inject, onMounted } from 'vue'
+import { defineComponent, inject } from 'vue'
 import { Tabbar, TabbarItem, Search } from 'vant'
 import { coreStateKey } from '../state'
 import router from '../routers'
