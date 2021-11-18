@@ -3,7 +3,7 @@
     class="lease-item-card"
     :to="{
       name: sortType === 'rent' ? 'rent_details' : 'sell_details',
-      query: { goods_id: '123456' },
+      query: { goods_id: goods.goods_id },
     }"
   >
     <div class="icon">
@@ -19,8 +19,10 @@
         <div class="van-multi-ellipsis--l2">{{ goods.goods_name }}</div>
       </div>
       <div class="price">
-        <Icon><CurrencyYen /></Icon
-        >{{ sortType === 'rent' ? goods.rent_money : goods.market_price }}/天
+        <Price
+          :amount="sortType === 'rent' ? goods.rent_money : goods.market_price"
+          unit="天"
+        />
       </div>
     </div>
   </router-link>
@@ -28,16 +30,14 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { CurrencyYen } from '@vicons/tabler'
-import { Icon } from '@vicons/utils'
+import Price from '../../public/price.vue'
 import { Image as VanImage } from 'vant'
 
 export default defineComponent({
   name: 'lease_item_card',
   components: {
     [VanImage.name]: VanImage,
-    Icon,
-    CurrencyYen,
+    Price,
   },
   props: {
     goods: {
@@ -76,8 +76,6 @@ export default defineComponent({
       margin-bottom: math.div($g-1, 2.5);
     }
     .price {
-      display: flex;
-      align-items: center;
       margin-top: auto;
       color: $color-g-3;
       font-size: 14px;

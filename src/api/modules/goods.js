@@ -13,7 +13,12 @@ export function getRentGoodsList_API(sort, page, count) {
   return ARFactory({
     url: DEV_MODE ? '/api/public/shop/list/rent' : '',
     method: 'GET',
-    data: { sort, page, count },
+    params: {
+      shop_id: JSON.parse(localStorage.getItem('selected_shop')).shop_id,
+      sort,
+      page,
+      count,
+    },
   })
 }
 
@@ -28,7 +33,12 @@ export function getSellGoodsList_API(sort, page, count) {
   return ARFactory({
     url: DEV_MODE ? '/api/public/shop/list/sell' : '',
     method: 'GET',
-    data: { sort, page, count },
+    params: {
+      shop_id: JSON.parse(localStorage.getItem('selected_shop')).shop_id,
+      sort,
+      page,
+      count,
+    },
   })
 }
 
@@ -41,7 +51,7 @@ export function getRentGoodsDetails_API(goods_id) {
   return ARFactory({
     url: DEV_MODE ? '/api/public/shop/goods/rent' : '',
     method: 'GET',
-    data: { goods_id },
+    params: { goods_id },
   })
 }
 
@@ -54,17 +64,22 @@ export function getSellGoodsDetails_API(goods_id) {
   return ARFactory({
     url: DEV_MODE ? '/api/public/shop/goods/sell' : '',
     method: 'GET',
-    data: { goods_id },
+    params: { goods_id },
   })
 }
 
 /**
- * 获取出售商品详细分类
+ * 获取商铺详细分类
+ * @param {string} shop_id 商铺id
+ * @returns
  */
-export function getClothingTypes_API() {
+export function getClothingTypes_API(shop_id) {
   return ARFactory({
     url: DEV_MODE ? '/api/public/shop/clothingType' : '',
     method: 'GET',
+    params: {
+      shop_id,
+    },
   })
 }
 
@@ -75,11 +90,9 @@ export function getClothingTypes_API() {
  */
 export function getGoodsSku_API(goods_id) {
   return ARFactory({
-    url: DEV_MODE
-      ? 'https://www.fastmock.site/mock/1a36bdaf985581497491f9d4d351fda3/rent/rent/test'
-      : '',
+    url: DEV_MODE ? '/api/public/shop/sku' : '',
     method: 'GET',
-    data: {
+    params: {
       goods_id,
     },
   })

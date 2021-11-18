@@ -9,9 +9,7 @@ import {
 } from '@vicons/tabler'
 
 export const BASE_API =
-  import.meta.env.VITE_MODE === 'DEV'
-    ? 'http://rap2api.taobao.org/app/mock/291472/'
-    : ''
+  import.meta.env.VITE_MODE === 'DEV' ? 'http://1.14.92.38/' : ''
 
 export const APP_ID = 'wx56e53ff5ed0b2046'
 export const BASE_URL = 'http://192.168.43.134:3000/'

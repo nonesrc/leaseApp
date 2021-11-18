@@ -174,7 +174,9 @@ export default defineComponent({
     !(async () => {
       if (!shopReady.value) {
         const { success, data } = axiosDataResolveHandle(
-          await getPickerShop_API('123123123')
+          await getPickerShop_API(
+            JSON.parse(localStorage.getItem('selected_shop')).shop_id
+          )
         )
         if (success) {
           pickerShopInfo.value = data

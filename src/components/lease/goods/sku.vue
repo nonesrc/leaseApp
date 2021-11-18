@@ -118,7 +118,7 @@ export default defineComponent({
       currentGoodsSku,
       getGoodsSku,
       userRecords,
-    } = useSku('12312312321')
+    } = useSku(router.currentRoute.value.query['goods_id'])
     // css配置
     const themeVars = {
       actionSheetCancelPaddingTop: 0,
@@ -144,15 +144,6 @@ export default defineComponent({
     }
     // 确认订单
     const orderConfirmed = () => {
-      if (
-        userRecords.value.beginTime === 0 ||
-        userRecords.value.endTime === 0
-      ) {
-        return Toast.fail('请选择起始和结束时间')
-      }
-      if (userRecords.value.beginTime >= userRecords.value.endTime) {
-        return Toast.fail('起始时间大于或等于结束时间！')
-      }
       props.closeSheetHandle()
       router.push({
         name: 'check_order',

@@ -19,6 +19,7 @@ export default function (goods_id) {
     if (success) {
       currentGoodsInfo.value = data.goods
       currentGoodsSku.value = data.skus
+      console.log(currentGoodsSku.value)
       currentGoodsSku.value.forEach(function (sku) {
         if (sku.type === 'SKU_slider' || sku.type === 'SKU_selector') {
           userRecords.value[sku.key] = sku.records[0].id
