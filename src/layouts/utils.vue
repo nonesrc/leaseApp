@@ -3,25 +3,32 @@
     <div class="layout-utils">
       <van-nav-bar
         :title="title"
-        left-text="返回"
-        left-arrow
         @click-left="onClickLeft"
         @click-right="onClickRight"
-      />
+      >
+        <template #left>
+          <Icon size="22"><ArrowBack /></Icon><span> 返回</span>
+        </template>
+      </van-nav-bar>
       <slot name="content"></slot>
     </div>
   </van-config-provider>
 </template>
 
 <script>
-import { computed, defineComponent, onMounted } from 'vue'
-import { NavBar, ConfigProvider } from 'vant'
+import { computed, defineComponent } from 'vue'
+import { ArrowBack } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
 import router from '../routers'
+import { NavBar, ConfigProvider } from 'vant'
+
 export default defineComponent({
   name: 'layout_utils',
   components: {
     [NavBar.name]: NavBar,
     [ConfigProvider.name]: ConfigProvider,
+    Icon,
+    ArrowBack,
   },
   setup() {
     // 顶部栏颜色配置

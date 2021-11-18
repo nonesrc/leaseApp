@@ -11,16 +11,31 @@
       <div class="username">zRain</div>
     </div>
     <van-grid :column-num="3">
-      <van-grid-item icon="orders-o" text="订单" :to="{ name: 'orders' }" />
-      <van-grid-item icon="cart-o" text="购物车" :to="{ name: 'cart' }" />
-      <van-grid-item icon="newspaper-o" text="通知" :to="{ name: 'message' }" />
+      <van-grid-item text="订单" :to="{ name: 'orders' }">
+        <template #icon>
+          <Icon size="25"><Notes /></Icon>
+        </template>
+      </van-grid-item>
+      <van-grid-item text="购物车" :to="{ name: 'cart' }">
+        <template #icon>
+          <Icon size="25"><ShoppingCart /></Icon>
+        </template>
+      </van-grid-item>
+      <van-grid-item text="通知" :to="{ name: 'message' }">
+        <template #icon>
+          <Icon size="25"><BellRinging /></Icon>
+        </template>
+      </van-grid-item>
     </van-grid>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import { Notes, ShoppingCart, BellRinging } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
 import { Col, Row, Cell, Image, Grid, GridItem } from 'vant'
+
 export default defineComponent({
   name: 'lease_mine',
   components: {
@@ -30,6 +45,10 @@ export default defineComponent({
     [Image.name]: Image,
     [Grid.name]: Grid,
     [GridItem.name]: GridItem,
+    Icon,
+    Notes,
+    ShoppingCart,
+    BellRinging,
   },
   setup() {
     return {}

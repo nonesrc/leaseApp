@@ -66,8 +66,16 @@
         </van-tab>
       </van-tabs>
       <van-action-bar>
-        <van-action-bar-icon icon="chat-o" text="客服" />
-        <van-action-bar-icon icon="cart-o" text="购物车" />
+        <van-action-bar-icon text="客服">
+          <template #icon
+            ><Icon size="20"><MessageDots /></Icon
+          ></template>
+        </van-action-bar-icon>
+        <van-action-bar-icon text="购物车">
+          <template #icon
+            ><Icon size="20"><ShoppingCartPlus /></Icon
+          ></template>
+        </van-action-bar-icon>
         <van-action-bar-button color="#6c757d" text="加入购物车" />
         <van-action-bar-button
           color="#334756"
@@ -85,6 +93,13 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
+import useGoods from '../../composable/goods'
+import router from '../../routers'
+import { resolveMoney } from '../../utils/helper'
+import Sku from './goods/sku.vue'
+import Price from '../public/price.vue'
+import { MessageDots, ShoppingCartPlus } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
 import {
   Cell,
   CellGroup,
@@ -95,16 +110,10 @@ import {
   ActionBarButton,
   Tab,
   Tabs,
-  Icon,
   Image as VanImage,
   Loading,
   ConfigProvider,
 } from 'vant'
-import useGoods from '../../composable/goods'
-import router from '../../routers'
-import { resolveMoney } from '../../utils/helper'
-import Sku from './goods/sku.vue'
-import Price from '../public/price.vue'
 
 export default defineComponent({
   name: 'lease_goods',
@@ -118,12 +127,14 @@ export default defineComponent({
     [ActionBarButton.name]: ActionBarButton,
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
-    [Icon.name]: Icon,
     [VanImage.name]: VanImage,
     [Loading.name]: Loading,
     [ConfigProvider.name]: ConfigProvider,
     Sku,
     Price,
+    Icon,
+    MessageDots,
+    ShoppingCartPlus,
   },
   setup() {
     const {

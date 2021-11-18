@@ -19,7 +19,7 @@
         <div class="van-multi-ellipsis--l2">{{ goods.goods_name }}</div>
       </div>
       <div class="price">
-        <span>¥</span
+        <Icon><CurrencyYen /></Icon
         >{{ sortType === 'rent' ? goods.rent_money : goods.market_price }}/天
       </div>
     </div>
@@ -28,11 +28,16 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { CurrencyYen } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
 import { Image as VanImage } from 'vant'
+
 export default defineComponent({
   name: 'lease_item_card',
   components: {
     [VanImage.name]: VanImage,
+    Icon,
+    CurrencyYen,
   },
   props: {
     goods: {
@@ -71,9 +76,11 @@ export default defineComponent({
       margin-bottom: math.div($g-1, 2.5);
     }
     .price {
+      display: flex;
+      align-items: center;
       margin-top: auto;
       color: $color-g-3;
-      font-size: 13px;
+      font-size: 14px;
     }
   }
 }

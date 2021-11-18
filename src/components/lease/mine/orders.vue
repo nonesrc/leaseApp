@@ -14,9 +14,11 @@
           @select="onFilterSelect"
         >
           <template #reference>
-            <van-button size="small" color="#2c394b" style="margin-right: 10px"
-              ><van-icon name="filter-o" /> {{ filterValue }}</van-button
-            >
+            <van-button size="small" color="#2c394b" style="margin-right: 10px">
+              <div class="flexc">
+                <Icon size="18"><Filter /></Icon> {{ filterValue }}
+              </div>
+            </van-button>
           </template>
         </van-popover>
       </template>
@@ -52,7 +54,10 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import OrderList from '../order/order_list.vue'
-import { Tab, Tabs, Search, Popover, Button, Icon } from 'vant'
+import { Filter } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
+import { Tab, Tabs, Search, Popover, Button } from 'vant'
+
 export default defineComponent({
   name: 'lease_orders',
   components: {
@@ -61,8 +66,9 @@ export default defineComponent({
     [Search.name]: Search,
     [Popover.name]: Popover,
     [Button.name]: Button,
-    [Icon.name]: Icon,
     OrderList,
+    Icon,
+    Filter,
   },
   setup() {
     // 搜索内容

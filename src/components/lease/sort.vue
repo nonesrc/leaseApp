@@ -1,46 +1,45 @@
 <template>
   <div class="lease-sort">
-    <van-sticky>
-      <section class="selection-taps">
-        <van-grid :clickable="true" :border="false">
-          <van-grid-item text="租赁" @click="onChangeSortType('rent')">
-            <template #icon
-              ><Icon size="30"> <Shirt /></Icon> </template
-          ></van-grid-item>
-          <van-grid-item text="定制" @click="onChangeSortType('sell')">
-            <template #icon
-              ><Icon size="30"> <Ruler2 /></Icon> </template
-          ></van-grid-item>
-          <van-grid-item text="清洗" @click="Toast('敬请期待')">
-            <template #icon
-              ><Icon size="30"> <ChartBubble /></Icon>
-            </template>
-          </van-grid-item>
-          <van-grid-item text="摄影" @click="Toast('敬请期待')">
-            <template #icon
-              ><Icon size="30"> <Camera /></Icon>
-            </template>
-          </van-grid-item>
-        </van-grid>
-        <transition name="van-fade">
-          <div class="clothing-type-tab" style="height: 44px">
-            <van-tabs
-              v-model:active="clothingTypes"
-              color="#082032"
-              @click-tab="onChangeClothingTypes"
-              v-show="clothingTypes.length"
-            >
-              <van-tab
-                :title="type.category_name"
-                :name="type.category_id"
-                v-for="(type, index) in rentClothingTypes"
-                :key="index"
-              ></van-tab>
-            </van-tabs>
-          </div>
-        </transition>
-      </section>
-    </van-sticky>
+    <section class="selection-taps">
+      <van-grid :clickable="true" :border="false">
+        <van-grid-item text="租赁" @click="onChangeSortType('rent')">
+          <template #icon
+            ><Icon size="30"> <Shirt /></Icon> </template
+        ></van-grid-item>
+        <van-grid-item text="定制" @click="onChangeSortType('sell')">
+          <template #icon
+            ><Icon size="30"> <Ruler2 /></Icon> </template
+        ></van-grid-item>
+        <van-grid-item text="清洗" @click="Toast('敬请期待')">
+          <template #icon
+            ><Icon size="30"> <ChartBubble /></Icon>
+          </template>
+        </van-grid-item>
+        <van-grid-item text="摄影" @click="Toast('敬请期待')">
+          <template #icon
+            ><Icon size="30"> <Camera /></Icon>
+          </template>
+        </van-grid-item>
+      </van-grid>
+      <van-sticky>
+        <div class="clothing-type-tab" style="height: 44px">
+          <van-tabs
+            v-model:active="clothingTypes"
+            color="#082032"
+            @click-tab="onChangeClothingTypes"
+            v-show="clothingTypes.length"
+          >
+            <van-tab
+              :title="type.category_name"
+              :name="type.category_id"
+              v-for="(type, index) in rentClothingTypes"
+              :key="index"
+            ></van-tab>
+          </van-tabs>
+        </div>
+      </van-sticky>
+    </section>
+
     <GoodsList
       :goodsList="
         sortType === 'rent' ? currentRentGoodsList : currentSellGoodsList
