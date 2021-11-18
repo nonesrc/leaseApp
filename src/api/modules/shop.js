@@ -7,12 +7,12 @@ const DEV_MODE = import.meta.env.VITE_MODE === 'DEV'
  * @param {string} goods_id 商品id
  * @returns
  */
-export function getPickerShop_API(goods_id) {
+export function getPickerShop_API(shop_id) {
   return ARFactory({
     url: DEV_MODE ? '/api/public/shop/goods/order/pickerShop' : '',
     method: 'GET',
-    data: {
-      goods_id,
+    params: {
+      shop_id,
     },
   })
 }

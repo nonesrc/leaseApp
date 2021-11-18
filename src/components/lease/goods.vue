@@ -27,6 +27,7 @@
                 :amount="currentGoodsDetails.deposit"
                 :fontSise="12"
                 :fontColor="'#6c757d'"
+                unit="天"
               />
             </div>
           </template>
@@ -92,8 +93,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import useGoods from '../../composable/goods'
+import { computed, defineComponent, ref, unref } from 'vue'
+import useShop from '../../composable/shop'
 import router from '../../routers'
 import { resolveMoney } from '../../utils/helper'
 import Sku from './goods/sku.vue'
@@ -141,7 +142,11 @@ export default defineComponent({
       currentRentGoodsDetails,
       currentSellGoodsDetails,
       getGoodsDetails,
-    } = useGoods()
+    } = useShop()
+    // 当前商品id
+    const currentGoodsId = computed(
+      () => router.currentRoute.value.query['goods_id']
+    )
     // 当前商品类型标识（租赁/出售）
     const currentGoodsDetails =
       router.currentRoute.value.meta.tag === 'rent'
@@ -157,7 +162,11 @@ export default defineComponent({
       swipeIndicatorInactiveBackgroundColor: '#6c757d',
     }
     !(async () => {
-      await getGoodsDetails('13123213')
+      if (currentGoodsId.value) {
+        await getGoodsDetails(unref(currentGoodsId))
+      } else {
+        router.push({ name: 'sort' })
+      }
     })()
     return {
       themeVars,

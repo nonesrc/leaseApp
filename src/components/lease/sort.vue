@@ -4,30 +4,33 @@
       <van-grid :clickable="true" :border="false">
         <van-grid-item text="租赁" @click="onChangeSortType('rent')">
           <template #icon
-            ><Icon size="30"> <Shirt /></Icon> </template
+            ><Icon size="30" :color="sortType === 'rent' ? '#ff4c29' : ''">
+              <Shirt /></Icon></template
         ></van-grid-item>
-        <van-grid-item text="定制" @click="onChangeSortType('sell')">
+        <van-grid-item text="清洗" @click="onChangeSortType('wash')">
           <template #icon
-            ><Icon size="30"> <Ruler2 /></Icon> </template
-        ></van-grid-item>
-        <van-grid-item text="清洗" @click="Toast('敬请期待')">
-          <template #icon
-            ><Icon size="30"> <ChartBubble /></Icon>
+            ><Icon size="30" :color="sortType === 'wash' ? '#ff4c29' : ''"
+              ><ChartBubble
+            /></Icon>
           </template>
         </van-grid-item>
+        <van-grid-item text="定制" @click="Toast('敬请期待')">
+          <template #icon
+            ><Icon size="30"> <Ruler2 /></Icon></template
+        ></van-grid-item>
         <van-grid-item text="摄影" @click="Toast('敬请期待')">
           <template #icon
-            ><Icon size="30"> <Camera /></Icon>
+            ><Icon size="30"><Camera /></Icon>
           </template>
         </van-grid-item>
       </van-grid>
       <van-sticky>
         <div class="clothing-type-tab" style="height: 44px">
           <van-tabs
-            v-model:active="clothingTypes"
+            v-model:active="secondTypes"
             color="#082032"
-            @click-tab="onChangeClothingTypes"
-            v-show="clothingTypes.length"
+            @click-tab="onChangeSecondTypes"
+            v-show="secondTypes.length"
           >
             <van-tab
               :title="type.category_name"
@@ -39,21 +42,30 @@
         </div>
       </van-sticky>
     </section>
-
-    <GoodsList
-      :goodsList="
-        sortType === 'rent' ? currentRentGoodsList : currentSellGoodsList
-      "
-      :sortType="sortType"
-    />
+    <section class="goods-list">
+      <van-list
+        v-model:loading="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <div class="goods-container">
+          <ItemCard
+            :goods="goods"
+            :sortType="sortType"
+            v-for="(goods, index) in goodsList"
+            :key="index"
+          />
+        </div>
+      </van-list>
+    </section>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, inject } from 'vue'
-import { coreStateKey } from '../../state'
-import GoodsList from './goods/goods_list.vue'
-import useGoods from '../../composable/goods'
+import { computed, defineComponent, ref } from 'vue'
+import useShop from '../../composable/shop'
+import ItemCard from '../lease/goods/item_card.vue'
 import { Shirt, Ruler2, ChartBubble, Camera } from '@vicons/tabler'
 import { Icon } from '@vicons/utils'
 import {
@@ -64,6 +76,7 @@ import {
   Grid,
   GridItem,
   Toast,
+  List,
   ConfigProvider,
 } from 'vant'
 
@@ -76,60 +89,96 @@ export default defineComponent({
     [Loading.name]: Loading,
     [Grid.name]: Grid,
     [GridItem.name]: GridItem,
+    [List.name]: List,
     [ConfigProvider.name]: ConfigProvider,
-    GoodsList,
     Icon,
     Shirt,
     ChartBubble,
     Camera,
     Ruler2,
+    ItemCard,
   },
   setup() {
     const {
-      controler: {
-        state: { rentClothingTypes, sellClothingTypes },
-        actions: { getClothingTypes },
-      },
-    } = inject(coreStateKey)
-    const {
+      rentClothingTypes,
+      sellClothingTypes,
+      getClothingTypes,
       getGoodsList,
       clearGoodsList,
       currentRentGoodsList,
       currentSellGoodsList,
-    } = useGoods()
+    } = useShop()
+    // 当前商品加载页数
+    const currnetPageIndex = ref(1)
     // 分类类型
     const sortType = ref('rent')
-    // 租赁服装类型 & 出售服装类型
-    const clothingTypes = ref('')
+    // 详细类型（动态）
+    const secondTypes = ref('')
+    // 商品代指
+    const goodsList = computed(() => {
+      return sortType.value === 'rent'
+        ? currentRentGoodsList.value
+        : currentSellGoodsList.value
+    })
     // 改变商品类型
-    const onChangeSortType = name => {
+    const onChangeSortType = async name => {
       clearGoodsList()
-      getGoodsList(null, null, null, name)
-      clothingTypes.value =
-        name === 'rent'
-          ? rentClothingTypes.value[0].category_id
-          : sellClothingTypes.value[0].category_id
+      currnetPageIndex.value = 1
+      await getGoodsList('', currnetPageIndex.value, 10, sortType.value)
+      sortType.value = name
     }
     // 改变服饰类型
-    const onChangeClothingTypes = ({ name }) => {
-      clothingTypes.value = name
+    const onChangeSecondTypes = async ({ name }) => {
+      clearGoodsList()
+      currnetPageIndex.value = 1
+      secondTypes.value = name
+      await getGoodsList(name, currnetPageIndex.value, 10, sortType.value)
+      console.log(goodsList.value)
     }
+
+    // 开始获取商品
     !(async () => {
-      await getGoodsList()
+      clearGoodsList()
+      await getGoodsList(
+        secondTypes.value,
+        currnetPageIndex.value,
+        10,
+        sortType.value
+      )
       if (!rentClothingTypes.value.length || !sellClothingTypes.value.length) {
         await getClothingTypes()
       }
-      clothingTypes.value = rentClothingTypes.value[0].category_id
+      secondTypes.value = rentClothingTypes.value[0].category_id
     })()
-
+    // 是否正在加载
+    const loading = ref(false)
+    // 是否完成
+    const finished = ref(false)
+    // 加载函数
+    const onLoad = async () => {
+      currnetPageIndex.value++
+      const resultLength = await getGoodsList(
+        secondTypes.value,
+        currnetPageIndex.value,
+        10,
+        sortType.value
+      )
+      if (resultLength < 10) {
+        finished.value = true
+      }
+    }
     return {
       currentRentGoodsList,
       currentSellGoodsList,
       sortType,
-      clothingTypes,
+      secondTypes,
       rentClothingTypes,
       onChangeSortType,
-      onChangeClothingTypes,
+      onChangeSecondTypes,
+      loading,
+      finished,
+      onLoad,
+      goodsList,
       Toast,
     }
   },
@@ -147,6 +196,11 @@ export default defineComponent({
     & > *:first-child {
       margin-bottom: math.div($g-1, 2);
     }
+  }
+  .goods-list .goods-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
 </style>

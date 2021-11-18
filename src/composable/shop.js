@@ -10,6 +10,7 @@ import {
   getSellGoodsList_API,
   getRentGoodsDetails_API,
   getSellGoodsDetails_API,
+  getClothingTypes_API,
 } from '../api'
 import { axiosDataResolveHandle } from '../utils/helper'
 
@@ -30,6 +31,10 @@ export default function () {
     ...shopSellGoodsPrice,
     _showPrice: 0,
   }
+  // 租赁商品详细分类
+  const rentClothingTypes = ref([])
+  // 出售商品详细分类
+  const sellClothingTypes = ref([])
   // 当前租赁商品列表
   const currentRentGoodsList = ref([])
   // 当前出售商品列表
@@ -39,34 +44,61 @@ export default function () {
   // 当前出售商品详情
   const currentSellGoodsDetails = ref({ ...sellGoodsDetails })
 
+  // 获取商铺详细分类
+  const getClothingTypes = async () => {
+    const { data, success } = axiosDataResolveHandle(
+      await getClothingTypes_API(
+        JSON.parse(localStorage.getItem('selected_shop')).shop_id
+      )
+    )
+    if (success) {
+      rentClothingTypes.value = data.rent
+      sellClothingTypes.value = data.sell
+      // rentClothingTypes.value = [
+      //   ...data.rent,
+      //   { category_name: '全部', category_id: '' },
+      // ]
+      // sellClothingTypes.value = [
+      //   ...data.sell,
+      //   { category_name: '全部', category_id: '' },
+      // ]
+    }
+  }
+
   // 获取租赁或出售商品的详细信息
   const getGoodsDetails = async (goods_id, type = 'rent') => {
-    const { code, success, msg, data } = axiosDataResolveHandle(
+    const { success, data } = axiosDataResolveHandle(
       type === 'rent'
         ? await getRentGoodsDetails_API(goods_id)
         : await getSellGoodsDetails_API(goods_id)
     )
-    if (type === 'rent') {
-      currentRentGoodsDetails.value = data
-      currentRentGoodsDetails.value._showPrice =
-        currentRentGoodsDetails.value.rent_money
-    } else {
-      currentSellGoodsDetails.value = data
-      currentSellGoodsDetails.value._showPrice =
-        currentSellGoodsDetails.value.market_price
+    if (success) {
+      if (type === 'rent') {
+        currentRentGoodsDetails.value = data
+        currentRentGoodsDetails.value._showPrice =
+          currentRentGoodsDetails.value.rent_money
+      } else {
+        currentSellGoodsDetails.value = data
+        currentSellGoodsDetails.value._showPrice =
+          currentSellGoodsDetails.value.market_price
+      }
     }
   }
 
   // 获取当前店铺的租赁或出售商品列表
   const getGoodsList = async (sort, page, count, type = 'rent') => {
-    const { code, success, msg, data } = axiosDataResolveHandle(
+    const { success, data } = axiosDataResolveHandle(
       type === 'rent'
         ? await getRentGoodsList_API(sort, page, count)
         : await getSellGoodsList_API(sort, page, count)
     )
-    type === 'rent'
-      ? currentRentGoodsList.value.push(...data)
-      : currentSellGoodsList.value.push(...data)
+    if (success) {
+      type === 'rent'
+        ? currentRentGoodsList.value.push(...data)
+        : currentSellGoodsList.value.push(...data)
+      return data.length
+    }
+    return 0
   }
 
   // 清空商品列表
@@ -80,6 +112,9 @@ export default function () {
   }
 
   return {
+    rentClothingTypes,
+    sellClothingTypes,
+    getClothingTypes,
     currentRentGoodsList,
     currentSellGoodsList,
     currentRentGoodsDetails,
