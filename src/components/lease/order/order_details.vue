@@ -1,7 +1,9 @@
 <template>
   <div class="lease-order-details">
     <div class="banner flexc">
-      <van-icon :name="ORDER_STATUS[order_status].icon" />
+      <Icon size="50">
+        <component :is="ORDER_STATUS[order_status].icon" />
+      </Icon>
       <span>{{ ORDER_STATUS[order_status].tip }}</span
       ><span>订单编号: {{ order_id }}</span>
     </div>
@@ -66,14 +68,15 @@
 
 <script>
 import { defineComponent, onMounted, ref } from 'vue'
+import router from '../../../routers'
 import Price from '../../public/price.vue'
 import CheckOrderList from './check_order_list.vue'
 import ShopCard from '../shop/shop_card.vue'
 import { testGetPerPayOrderDetails_API } from '../../../api'
 import { axiosDataResolveHandle } from '../../../utils/helper'
 import { ORDER_STATUS } from '../../../utils/config'
+import { Icon } from '@vicons/utils'
 import {
-  Icon,
   Cell,
   CellGroup,
   Loading,
@@ -82,11 +85,10 @@ import {
   Field,
   Button,
 } from 'vant'
-import router from '../../../routers'
+
 export default defineComponent({
   name: 'lease_order_details',
   components: {
-    [Icon.name]: Icon,
     [Cell.name]: Cell,
     [CellGroup.name]: CellGroup,
     [Loading.name]: Loading,
@@ -97,6 +99,7 @@ export default defineComponent({
     CheckOrderList,
     Price,
     ShopCard,
+    Icon,
   },
   setup() {
     // 订单编号
@@ -145,7 +148,7 @@ export default defineComponent({
   background: #fff;
   & > .banner {
     position: relative;
-    height: 120px;
+    height: 130px;
     flex-direction: column;
     color: #fff;
     background-image: linear-gradient(
@@ -156,8 +159,7 @@ export default defineComponent({
       #2e3c4e,
       #2c394b
     );
-    .van-icon {
-      font-size: 30px;
+    span:nth-child(1) {
       margin-bottom: $g-1;
     }
     span:nth-child(2),

@@ -3,7 +3,7 @@
     <van-search
       v-model="searchText"
       placeholder="请输入搜索关键词"
-      v-show="router.currentRoute.value.meta.tag !== 'mine'"
+      v-show="currentPageTag !== 'mine'"
     />
     <slot name="content"></slot>
     <van-tabbar
@@ -11,46 +11,49 @@
       active-color="#082032"
       inactive-color="#495057"
     >
-      <van-tabbar-item
-        :icon="
-          router.currentRoute.value.meta.tag === 'home'
-            ? 'wap-home'
-            : 'wap-home-o'
-        "
-        :to="{ name: 'lease_home' }"
-        >首页</van-tabbar-item
-      >
-      <van-tabbar-item
-        :icon="
-          router.currentRoute.value.meta.tag === 'sort'
-            ? 'shopping-cart'
-            : 'shopping-cart-o'
-        "
-        :to="{ name: 'lease_sort' }"
-        >选购</van-tabbar-item
-      >
-      <van-tabbar-item
-        :icon="
-          router.currentRoute.value.meta.tag === 'mine' ? 'manager' : 'user-o'
-        "
-        :to="{ name: 'lease_mine' }"
-        >我的</van-tabbar-item
-      >
+      <van-tabbar-item :to="{ name: 'lease_home' }"
+        >首页
+        <template #icon
+          ><Icon :color="currentPageTag === 'home' ? '#ff4c29' : '#2c394b'"
+            ><SmartHome /></Icon
+        ></template>
+      </van-tabbar-item>
+      <van-tabbar-item :to="{ name: 'lease_sort' }"
+        >选购
+        <template #icon
+          ><Icon :color="currentPageTag === 'sort' ? '#ff4c29' : '#2c394b'"
+            ><ShoppingCart /></Icon
+        ></template>
+      </van-tabbar-item>
+      <van-tabbar-item :to="{ name: 'lease_mine' }"
+        >我的
+        <template #icon
+          ><Icon :color="currentPageTag === 'mine' ? '#ff4c29' : '#2c394b'"
+            ><User /></Icon
+        ></template>
+      </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 
 <script>
-import { defineComponent, inject, onMounted } from 'vue'
-import { Tabbar, TabbarItem, Search } from 'vant'
+import { computed, defineComponent, inject } from 'vue'
 import { coreStateKey } from '../state'
 import router from '../routers'
+import { SmartHome, ShoppingCart, User } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
+import { Tabbar, TabbarItem, Search } from 'vant'
+
 export default defineComponent({
   name: 'layout-main',
   components: {
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
     [Search.name]: Search,
+    Icon,
+    ShoppingCart,
+    User,
+    SmartHome,
   },
   setup() {
     const {
@@ -58,7 +61,11 @@ export default defineComponent({
         state: { entranceBarActive, searchText },
       },
     } = inject(coreStateKey)
-    return { entranceBarActive, searchText, router }
+    // 当前页面tag
+    const currentPageTag = computed(
+      () => router.currentRoute.value.meta.tag || 'home'
+    )
+    return { entranceBarActive, searchText, currentPageTag }
   },
 })
 </script>

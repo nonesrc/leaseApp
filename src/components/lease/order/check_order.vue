@@ -88,7 +88,6 @@
           (transportType !== 'self' ? goodsInfo.freight : 0)
         "
         :tip="transportType === 'no_self' ? '上门送还需正确填写个人信息' : ''"
-        tip-icon="info-o"
         @submit="onSubmitOrder"
       >
         <template #button>
@@ -107,6 +106,9 @@ import CheckOrderList from './check_order_list.vue'
 import DatePicker from './date_picker.vue'
 import Price from '../../public/price.vue'
 import ShopCard from '../shop/shop_card.vue'
+import { getPickerShop_API } from '../../../api'
+import { axiosDataResolveHandle } from '../../../utils/helper'
+import router from '../../../routers'
 import {
   Field,
   CellGroup,
@@ -118,9 +120,7 @@ import {
   ConfigProvider,
   SubmitBar,
 } from 'vant'
-import { getPickerShop_API } from '../../../api'
-import { axiosDataResolveHandle } from '../../../utils/helper'
-import router from '../../../routers'
+
 export default defineComponent({
   name: 'lease_check_order',
   components: {

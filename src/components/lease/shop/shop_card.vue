@@ -19,7 +19,7 @@
         }}</van-tag>
       </div>
       <div>
-        <van-icon name="phone" />
+        <Icon><Phone /></Icon>
         {{ pickerShopInfo.shop_contact }} ({{ pickerShopInfo.shop_owner }})
       </div>
     </div>
@@ -35,15 +35,19 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { Image as VanImage, Loading, Tag, Icon, Field } from 'vant'
+import { Phone } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
+import { Image as VanImage, Loading, Tag, Field } from 'vant'
+
 export default defineComponent({
   name: 'lease_shop_card',
   components: {
     [VanImage.name]: VanImage,
     [Loading.name]: Loading,
     [Tag.name]: Tag,
-    [Icon.name]: Icon,
     [Field.name]: Field,
+    Icon,
+    Phone,
   },
   props: {
     pickerShopInfo: {

@@ -1,36 +1,45 @@
 <template>
   <div class="lease-sort">
-    <van-sticky>
-      <section class="selection-taps">
-        <van-tabs
-          v-model:active="sortType"
-          type="card"
-          title-inactive-color="#082032"
-          color="#082032"
-          @click-tab="onChangeSortType"
-        >
-          <van-tab title="服装租赁" name="rent"></van-tab>
-          <van-tab title="服装购买" name="sell"></van-tab>
-        </van-tabs>
-        <transition name="van-fade">
-          <div class="clothing-type-tab" style="height: 44px">
-            <van-tabs
-              v-model:active="clothingTypes"
-              color="#082032"
-              @click-tab="onChangeClothingTypes"
-              v-show="clothingTypes.length"
-            >
-              <van-tab
-                :title="type.category_name"
-                :name="type.category_id"
-                v-for="(type, index) in rentClothingTypes"
-                :key="index"
-              ></van-tab>
-            </van-tabs>
-          </div>
-        </transition>
-      </section>
-    </van-sticky>
+    <section class="selection-taps">
+      <van-grid :clickable="true" :border="false">
+        <van-grid-item text="租赁" @click="onChangeSortType('rent')">
+          <template #icon
+            ><Icon size="30"> <Shirt /></Icon> </template
+        ></van-grid-item>
+        <van-grid-item text="定制" @click="onChangeSortType('sell')">
+          <template #icon
+            ><Icon size="30"> <Ruler2 /></Icon> </template
+        ></van-grid-item>
+        <van-grid-item text="清洗" @click="Toast('敬请期待')">
+          <template #icon
+            ><Icon size="30"> <ChartBubble /></Icon>
+          </template>
+        </van-grid-item>
+        <van-grid-item text="摄影" @click="Toast('敬请期待')">
+          <template #icon
+            ><Icon size="30"> <Camera /></Icon>
+          </template>
+        </van-grid-item>
+      </van-grid>
+      <van-sticky>
+        <div class="clothing-type-tab" style="height: 44px">
+          <van-tabs
+            v-model:active="clothingTypes"
+            color="#082032"
+            @click-tab="onChangeClothingTypes"
+            v-show="clothingTypes.length"
+          >
+            <van-tab
+              :title="type.category_name"
+              :name="type.category_id"
+              v-for="(type, index) in rentClothingTypes"
+              :key="index"
+            ></van-tab>
+          </van-tabs>
+        </div>
+      </van-sticky>
+    </section>
+
     <GoodsList
       :goodsList="
         sortType === 'rent' ? currentRentGoodsList : currentSellGoodsList
@@ -43,9 +52,21 @@
 <script>
 import { defineComponent, ref, inject } from 'vue'
 import { coreStateKey } from '../../state'
-import { Tab, Tabs, Sticky, Loading } from 'vant'
 import GoodsList from './goods/goods_list.vue'
 import useGoods from '../../composable/goods'
+import { Shirt, Ruler2, ChartBubble, Camera } from '@vicons/tabler'
+import { Icon } from '@vicons/utils'
+import {
+  Tab,
+  Tabs,
+  Sticky,
+  Loading,
+  Grid,
+  GridItem,
+  Toast,
+  ConfigProvider,
+} from 'vant'
+
 export default defineComponent({
   name: 'lease_sort',
   components: {
@@ -53,7 +74,15 @@ export default defineComponent({
     [Tabs.name]: Tabs,
     [Sticky.name]: Sticky,
     [Loading.name]: Loading,
+    [Grid.name]: Grid,
+    [GridItem.name]: GridItem,
+    [ConfigProvider.name]: ConfigProvider,
     GoodsList,
+    Icon,
+    Shirt,
+    ChartBubble,
+    Camera,
+    Ruler2,
   },
   setup() {
     const {
@@ -73,7 +102,7 @@ export default defineComponent({
     // 租赁服装类型 & 出售服装类型
     const clothingTypes = ref('')
     // 改变商品类型
-    const onChangeSortType = ({ name }) => {
+    const onChangeSortType = name => {
       clearGoodsList()
       getGoodsList(null, null, null, name)
       clothingTypes.value =
@@ -101,6 +130,7 @@ export default defineComponent({
       rentClothingTypes,
       onChangeSortType,
       onChangeClothingTypes,
+      Toast,
     }
   },
 })
