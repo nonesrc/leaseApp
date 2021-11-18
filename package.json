@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite --host --mode dev",
     "prod": "vite --host --mode prod",
-    "build": "vite build",
+    "build": "vite build --mode dev",
     "serve": "vite preview"
   },
   "dependencies": {
