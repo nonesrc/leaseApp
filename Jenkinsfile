@@ -42,7 +42,7 @@ pipeline {
     stages {
         stage('检查仓库') {
             steps {
-                git branch: 'dev', credentialsId: 'bec34d29-6cf2-408d-8ed1-cf279cf6f5aa', url: 'git@github.com:nonesrc/rentApp.git'
+                git branch: 'master', credentialsId: 'bec34d29-6cf2-408d-8ed1-cf279cf6f5aa', url: 'git@github.com:nonesrc/rentApp.git'
             }
         }
 
@@ -58,6 +58,15 @@ pipeline {
                 }
             }
         }
+      
+        stage('发送文件'){
+            steps{
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'rantServer', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''echo `pwd`
+                    cd /www/wwwroot/shop.dreamlongclothes.com
+                    tar -zxvf rantAPP.tar.gz
+                    rm -f rantAPP.tar.gz ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'shop.dreamlongclothes.com', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/rantAPP.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            }
+        }
     }
 
     post {
@@ -71,7 +80,7 @@ pipeline {
                     [$class: 'RequesterRecipientProvider']
                 ], 
                 replyTo: '$DEFAULT_REPLYTO',
-                to: '$DEFAULT_RECIPIENTS'
+                to: '$DEFAULT_RECIPIENTS 523340889'
         }
     }
 }
