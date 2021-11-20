@@ -18,6 +18,7 @@ pipeline {
 
         stage('构建') {
             steps {
+                step([$class: 'GitHubCommitStatusSetter', statusResultSource : [$class: 'DefaultStatusResultSource']])
                 nodejs('node16.13.0') {
                     sh '''npm install
                     npm run build
@@ -27,15 +28,11 @@ pipeline {
                 }
             }
         }
-        stage('更改remote构建状态'){
-            steps{
-                step([$class: 'GitHubCommitStatusSetter', statusResultSource : [$class: 'DefaultStatusResultSource']])
-            }
-        }
     }
 
     post {
         always  {
+            step([$class: 'GitHubCommitStatusSetter', statusResultSource : [$class: 'DefaultStatusResultSource']])
             emailext subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT',
                 recipientProviders: [
