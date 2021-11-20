@@ -29,7 +29,7 @@ pipeline {
         }
         stage('更改remote构建状态'){
             steps{
-                step([$class: 'GitHubCommitStatusSetter'])
+                step([$class: 'GitHubCommitStatusSetter', statusResultSource : [$class: 'DefaultStatusResultSource']])
             }
         }
     }
