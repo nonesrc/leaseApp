@@ -1,33 +1,3 @@
-def getRepoURL() {
-  sh "git config --get remote.origin.url > .git/remote-url"
-  return readFile(".git/remote-url").trim()
-}
-
-def getCommitSha() {
-  sh "git rev-parse HEAD > .git/current-commit"
-  return readFile(".git/current-commit").trim()
-}
-
-def updateGithubCommitStatus(build) {
-  repoUrl = getRepoURL()
-  commitSha = getCommitSha()
-
-  step([
-    $class: 'GitHubCommitStatusSetter',
-    reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
-    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitSha],
-    errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
-    statusResultSource: [
-      $class: 'ConditionalStatusResultSource',
-      results: [
-        [$class: 'BetterThanOrEqualBuildResult', result: 'SUCCESS', state: 'SUCCESS', message: build.description],
-        [$class: 'BetterThanOrEqualBuildResult', result: 'FAILURE', state: 'FAILURE', message: build.description],
-        [$class: 'AnyBuildResult', state: 'FAILURE', message: 'Loophole']
-      ]
-    ]
-  ])
-}
-
 pipeline {
     agent any
     
@@ -42,13 +12,13 @@ pipeline {
     stages {
         stage('检查仓库') {
             steps {
-                git branch: 'master', credentialsId: 'bec34d29-6cf2-408d-8ed1-cf279cf6f5aa', url: 'git@github.com:nonesrc/rentApp.git'
+                git branch: 'dev', credentialsId: 'bec34d29-6cf2-408d-8ed1-cf279cf6f5aa', url: 'git@github.com:nonesrc/rentApp.git'
             }
         }
 
         stage('构建') {
             steps {
-                updateGithubCommitStatus(currentBuild)
+                step([$class: 'GitHubCommitStatusSetter', statusResultSource : [$class: 'DefaultStatusResultSource']])
                 nodejs('node16.13.0') {
                     sh '''npm install
                     npm run build
@@ -58,20 +28,11 @@ pipeline {
                 }
             }
         }
-      
-        stage('发送文件'){
-            steps{
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'rantServer', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''echo `pwd`
-                    cd /www/wwwroot/shop.dreamlongclothes.com
-                    tar -zxvf rantAPP.tar.gz
-                    rm -f rantAPP.tar.gz ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'shop.dreamlongclothes.com', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/rantAPP.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
-            }
-        }
     }
 
     post {
         always  {
-            updateGithubCommitStatus(currentBuild)
+            step([$class: 'GitHubCommitStatusSetter', statusResultSource : [$class: 'DefaultStatusResultSource']])
             emailext subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT',
                 recipientProviders: [
@@ -80,7 +41,7 @@ pipeline {
                     [$class: 'RequesterRecipientProvider']
                 ], 
                 replyTo: '$DEFAULT_REPLYTO',
-                to: '$DEFAULT_RECIPIENTS 523340889'
+                to: '$DEFAULT_RECIPIENTS'
         }
     }
 }
