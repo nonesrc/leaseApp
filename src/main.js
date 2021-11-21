@@ -8,3 +8,4 @@ import './assets/styles/index.scss'
 const APP = createApp(App)
 APP.use(router)
 APP.mount('#app')
+a
