@@ -1,27 +1,3 @@
-@NonCPS
-def getChangeString() {
-    MAX_MSG_LEN = 100
-    def changeString = ""
-
-    echo "Gathering SCM changes"
-    def changeLogSets = currentBuild.rawBuild.changeSets
-    for (int i = 0; i < changeLogSets.size(); i++) {
-        def entries = changeLogSets[i].items
-        for (int j = 0; j < entries.length; j++) {
-            def entry = entries[j]
-            truncated_msg = entry.msg.take(MAX_MSG_LEN)
-            changeString += "🔖 [${entry.author}] » ${truncated_msg}\n"
-        }
-    }
-
-    if (!changeString) {
-        changeString = "[nonesrc] 无任何修改"
-    }
-    echo changeString
-    return changeString
-}
-
-
 pipeline {
     agent any
     
@@ -57,8 +33,8 @@ pipeline {
     post {
         always  {
             step([$class: 'GitHubCommitStatusSetter', statusResultSource : [$class: 'DefaultStatusResultSource']])
-            withCredentials([string(credentialsId: 'ad123e97-743e-4183-8b7c-7dee66df4fcb', variable: 'QQ_Notify_API'), string(credentialsId: '4f813789-0a79-486f-830c-3ce4c5a63a9c', variable: 'QQ_Notify_Token')]) {
-                sh '''curl -H "Content-Type: application/json" -X POST  --data '{"token":"'''+QQ_Notify_Token+'''","JOB_NAME":"'''+currentBuild.fullDisplayName+'''","BUILD_NUMBER":"'''+BUILD_NUMBER+'''","BUILD_STATUS":"'''+currentBuild.result+'''","PROJECT_NAME":"'''+JOB_NAME+'''","CAUSE":"'''+currentBuild.getBuildCauses()+'''","CHANGE_URL":"'''+currentBuild.absoluteUrl+'''changes","BUILD_URL":"'''+BUILD_URL+'''","DURATION":"'''+currentBuild.duration+'''","CHANGE_SETS":"'''+getChangeString()+'''","JOB_DISPLAY_URL":"'''+JOB_DISPLAY_URL+'''","RUN_DISPLAY_URL":"'''+RUN_DISPLAY_URL+'''"}' '''+QQ_Notify_API
+            withCredentials([string(credentialsId: 'ad123e97-743e-4183-8b7c-7dee66df4fcb', variable: 'QQ_Notify_API')]) {
+                sh '''curl ${QQ_Notify_API}?BUILD_URL=${BUILD_URL}&BUILD_NUMBER=${BUILD_NUMBER}'''
             }
         }
         
