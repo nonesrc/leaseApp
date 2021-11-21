@@ -15,10 +15,11 @@ def getChangeString() {
     }
 
     if (!changeString) {
-        changeString = " - No new changes"
+        changeString = "[nonesrc] 无任何修改"
     }
     return changeString
 }
+
 
 pipeline {
     agent any
