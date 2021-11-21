@@ -1,7 +1,6 @@
-// vite.config.js
 import vue from '@vitejs/plugin-vue'
 import styleImport from 'vite-plugin-style-import'
-
+ 
 export default {
   plugins: [
     vue(),
