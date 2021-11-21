@@ -1,7 +1,7 @@
 import vue from '@vitejs/plugin-vue'
 import styleImport from 'vite-plugin-style-import'
  
-export default {
+export default 
   plugins: [
     vue(),
     styleImport({
