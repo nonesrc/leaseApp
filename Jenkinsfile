@@ -42,15 +42,21 @@ pipeline {
     post {
         always  {
             step([$class: 'GitHubCommitStatusSetter', statusResultSource : [$class: 'DefaultStatusResultSource']])
-            emailext subject: '$DEFAULT_SUBJECT',
-                body: '$DEFAULT_CONTENT',
-                recipientProviders: [
-                    [$class: 'CulpritsRecipientProvider'],
-                    [$class: 'DevelopersRecipientProvider'],
-                    [$class: 'RequesterRecipientProvider']
-                ], 
-                replyTo: '$DEFAULT_REPLYTO',
-                to: '$DEFAULT_RECIPIENTS 523340889'
+            withCredentials([string(credentialsId: 'ad123e97-743e-4183-8b7c-7dee66df4fcb', variable: 'QQ_Notify_API')]) {
+                sh '''curl ${QQ_Notify_API}?BUILD_URL=${BUILD_URL}&BUILD_NUMBER=${BUILD_NUMBER}'''
+            }
+        }
+
+        failure  {
+                emailext subject: '$DEFAULT_SUBJECT',
+                    body: '$DEFAULT_CONTENT',
+                    recipientProviders: [
+                        [$class: 'CulpritsRecipientProvider'],
+                        [$class: 'DevelopersRecipientProvider'],
+                        [$class: 'RequesterRecipientProvider']
+                    ], 
+                    replyTo: '$DEFAULT_REPLYTO',
+                    to: '$DEFAULT_RECIPIENTS'
         }
     }
 }
