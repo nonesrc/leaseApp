@@ -17,6 +17,7 @@ def getChangeString() {
     if (!changeString) {
         changeString = "[nonesrc] 无任何修改"
     }
+    echo changeString
     return changeString
 }
 
