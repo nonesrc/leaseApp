@@ -10,7 +10,7 @@ def getChangeString() {
         for (int j = 0; j < entries.length; j++) {
             def entry = entries[j]
             truncated_msg = entry.msg.take(MAX_MSG_LEN)
-            changeString += "🔖 [${entry.author}] » ${truncated_msg}"
+            changeString += "🔖 [${entry.author}] » ${truncated_msg}\n"
         }
     }
 
