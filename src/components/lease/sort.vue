@@ -130,17 +130,6 @@ export default defineComponent({
       filter.value = name
       await getGoodsList(sortType.value, name, currnetPageIndex.value, 10)
     }
-    // 获取商品列表和详细分类
-    !(async () => {
-      clearGoodsList(true)
-      await getGoodsFilters()
-      await getGoodsList(
-        sortType.value,
-        filter.value,
-        currnetPageIndex.value,
-        10
-      )
-    })()
     // 是否正在加载
     const loading = ref(false)
     // 是否完成
@@ -148,6 +137,7 @@ export default defineComponent({
     // 加载函数
     const onLoad = async () => {
       currnetPageIndex.value++
+      if(!filters.value.length) await getGoodsFilters()
       const resultLength = await getGoodsList(
         sortType.value,
         filter.value,
