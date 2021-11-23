@@ -20,7 +20,7 @@ const entrance = {
       },
     },
     {
-      path: 'sort',
+      path: 'sort/:sortType',
       name: 'lease_sort',
       component: Sort,
       meta: {

@@ -1,7 +1,7 @@
 <template>
   <section class="lease-shop-card">
     <van-image
-      src="http://dummyimage.com/150x150/3498db/png&text=deelter"
+      src="https://dummyimage.com/80x80/2c394b/ffffff.png&text=Dream"
       height="80"
       width="80"
       fit="cover"

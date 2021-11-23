@@ -27,15 +27,15 @@
       <van-sticky>
         <div class="clothing-type-tab" style="height: 44px">
           <van-tabs
-            v-model:active="secondTypes"
-            color="#082032"
-            @click-tab="onChangeSecondTypes"
-            v-show="secondTypes.length"
+            v-model:active="filter"
+            color="#ff4c29"
+            @click-tab="onChangeFilter"
+            v-show="filters.length"
           >
             <van-tab
               :title="type.category_name"
               :name="type.category_id"
-              v-for="(type, index) in rentClothingTypes"
+              v-for="(type, index) in filters"
               :key="index"
             ></van-tab>
           </van-tabs>
@@ -53,7 +53,7 @@
           <ItemCard
             :goods="goods"
             :sortType="sortType"
-            v-for="(goods, index) in goodsList"
+            v-for="(goods, index) in currentGoodsList"
             :key="index"
           />
         </div>
@@ -79,6 +79,7 @@ import {
   List,
   ConfigProvider,
 } from 'vant'
+import router from '../../routers'
 
 export default defineComponent({
   name: 'lease_sort',
@@ -100,55 +101,45 @@ export default defineComponent({
   },
   setup() {
     const {
-      rentClothingTypes,
-      sellClothingTypes,
-      getClothingTypes,
+      filters,
+      currentGoodsList,
+      getGoodsFilters,
       getGoodsList,
       clearGoodsList,
-      currentRentGoodsList,
-      currentSellGoodsList,
     } = useShop()
     // 当前商品加载页数
     const currnetPageIndex = ref(1)
     // 分类类型
-    const sortType = ref('rent')
-    // 详细类型（动态）
-    const secondTypes = ref('')
-    // 商品代指
-    const goodsList = computed(() => {
-      return sortType.value === 'rent'
-        ? currentRentGoodsList.value
-        : currentSellGoodsList.value
+    const sortType = computed(() => {
+      return router.currentRoute.value.params['sortType'] || 'error'
     })
-    // 改变商品类型
+    // 二级分类
+    const filter = ref('')
+    // 切换分类类型
     const onChangeSortType = async name => {
-      clearGoodsList()
+      router.push({ name: 'lease_sort', params: { sortType: name } })
+      clearGoodsList(true)
       currnetPageIndex.value = 1
-      await getGoodsList('', currnetPageIndex.value, 10, sortType.value)
-      sortType.value = name
+      await getGoodsFilters()
+      await getGoodsList(name, '', currnetPageIndex.value, 10)
     }
     // 改变服饰类型
-    const onChangeSecondTypes = async ({ name }) => {
+    const onChangeFilter = async ({ name }) => {
       clearGoodsList()
       currnetPageIndex.value = 1
-      secondTypes.value = name
-      await getGoodsList(name, currnetPageIndex.value, 10, sortType.value)
-      console.log(goodsList.value)
+      filter.value = name
+      await getGoodsList(sortType.value, name, currnetPageIndex.value, 10)
     }
-
-    // 开始获取商品
+    // 获取商品列表和详细分类
     !(async () => {
-      clearGoodsList()
+      clearGoodsList(true)
+      await getGoodsFilters()
       await getGoodsList(
-        secondTypes.value,
+        sortType.value,
+        filter.value,
         currnetPageIndex.value,
-        10,
-        sortType.value
+        10
       )
-      if (!rentClothingTypes.value.length || !sellClothingTypes.value.length) {
-        await getClothingTypes()
-      }
-      secondTypes.value = rentClothingTypes.value[0].category_id
     })()
     // 是否正在加载
     const loading = ref(false)
@@ -158,27 +149,25 @@ export default defineComponent({
     const onLoad = async () => {
       currnetPageIndex.value++
       const resultLength = await getGoodsList(
-        secondTypes.value,
+        sortType.value,
+        filter.value,
         currnetPageIndex.value,
-        10,
-        sortType.value
+        10
       )
       if (resultLength < 10) {
         finished.value = true
       }
     }
     return {
-      currentRentGoodsList,
-      currentSellGoodsList,
+      filters,
+      currentGoodsList,
       sortType,
-      secondTypes,
-      rentClothingTypes,
+      filter,
       onChangeSortType,
-      onChangeSecondTypes,
+      onChangeFilter,
       loading,
       finished,
       onLoad,
-      goodsList,
       Toast,
     }
   },
@@ -201,7 +190,7 @@ export default defineComponent({
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 20px;
+    gap: 10px;
   }
 }
 </style>

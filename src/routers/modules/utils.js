@@ -4,6 +4,7 @@ import Cart from '../../components/lease/mine/cart.vue'
 import Message from '../../components/lease/mine/message.vue'
 import OrderDetails from '../../components/lease/order/order_details.vue'
 import Pay from '../../components/lease/pay.vue'
+import ErrorPage from '../../components/public/error_page.vue'
 
 // 登录页
 const utils = {
@@ -13,7 +14,7 @@ const utils = {
     tag: 'utils',
   },
   children: [
-    {    
+    {
       path: 'mine',
       redirect: '/mine',
     },
@@ -57,6 +58,7 @@ const utils = {
         tag: 'pay',
       },
     },
+    { path: '/:pathMatch(.*)*', name: 'error_page', component: ErrorPage },
   ],
 }
 

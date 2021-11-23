@@ -1,6 +1,4 @@
 import { ref } from 'vue'
-import { getClothingTypes_API } from '../../api'
-import { axiosDataResolveHandle } from '../../utils/helper'
 
 const entranceBarValues = ['home', 'sort', 'mine']
 export default function () {

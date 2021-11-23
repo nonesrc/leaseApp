@@ -18,7 +18,8 @@
             ><SmartHome /></Icon
         ></template>
       </van-tabbar-item>
-      <van-tabbar-item :to="{ name: 'lease_sort' }"
+      <van-tabbar-item
+        :to="{ name: 'lease_sort', params: { sortType: 'rent' } }"
         >选购
         <template #icon
           ><Icon :color="currentPageTag === 'sort' ? '#ff4c29' : '#2c394b'"
