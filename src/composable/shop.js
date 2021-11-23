@@ -18,7 +18,6 @@ export default function () {
     ...shopGoodsDetails,
     ...shopRentGoodsPrice,
     ...shopSellGoodsPrice,
-    _showPrice: 0,
   }
 
   // 商品详细分类
@@ -54,7 +53,6 @@ export default function () {
         currentGoodsDetails.value,
         data
       )
-      currentGoodsDetails.value._showPrice = 0
     }
   }
 

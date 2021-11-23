@@ -12,20 +12,10 @@ const goods = {
   },
   children: [
     {
-      path: 'rent',
-      name: 'rent_details',
+      path: 'goods_details',
+      name: 'goods_details',
       component: Goods,
       meta: {
-        tag: 'rent',
-        title: '商品详情',
-      },
-    },
-    {
-      path: 'sell',
-      name: 'sell_details',
-      component: Goods,
-      meta: {
-        tag: 'sell',
         title: '商品详情',
       },
     },

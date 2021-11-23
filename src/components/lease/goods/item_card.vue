@@ -2,7 +2,7 @@
   <router-link
     class="lease-item-card"
     :to="{
-      name: sortType === 'rent' ? 'rent_details' : 'sell_details',
+      name: 'goods_details',
       query: { goods_id: goods.goods_id },
     }"
   >
@@ -20,7 +20,9 @@
       </div>
       <div class="price">
         <Price
-          :amount="sortType === 'rent' ? goods.rent_money : goods.market_price"
+          :amount="
+            goods.sale_type === 0 ? goods.rent_money : goods.market_price
+          "
           unit="天"
         />
       </div>
@@ -43,11 +45,6 @@ export default defineComponent({
     goods: {
       type: Object,
       required: true,
-    },
-    sortType: {
-      type: String,
-      required: false,
-      default: 'rent',
     },
   },
   setup() {

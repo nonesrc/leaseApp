@@ -52,7 +52,6 @@
         <div class="goods-container">
           <ItemCard
             :goods="goods"
-            :sortType="sortType"
             v-for="(goods, index) in currentGoodsList"
             :key="index"
           />

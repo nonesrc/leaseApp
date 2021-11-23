@@ -20,7 +20,11 @@
           <template #label>
             <div class="goods-price">
               <Price
-                :amount="currentGoodsDetails._showPrice"
+                :amount="
+                  currentGoodsDetails.sale_type === 0
+                    ? currentGoodsDetails.rent_money
+                    : currentGoodsDetails.market_price
+                "
                 :unit="currentGoodsDetails.unit"
               />
               <Price
@@ -28,6 +32,7 @@
                 :fontSise="12"
                 :fontColor="'#6c757d'"
                 unit="天"
+                v-if="currentGoodsDetails.sale_type === 0"
               />
             </div>
           </template>
@@ -138,20 +143,11 @@ export default defineComponent({
     ShoppingCartPlus,
   },
   setup() {
-    const {
-      currentRentGoodsDetails,
-      currentSellGoodsDetails,
-      getGoodsDetails,
-    } = useShop()
+    const { currentGoodsDetails, getGoodsDetails } = useShop()
     // 当前商品id
     const currentGoodsId = computed(
       () => router.currentRoute.value.query['goods_id']
     )
-    // 当前商品类型标识（租赁/出售）
-    const currentGoodsDetails =
-      router.currentRoute.value.meta.tag === 'rent'
-        ? currentRentGoodsDetails
-        : currentSellGoodsDetails
     // 当前标签状态
     const currentTabs = ref('details')
     // 是否展示Sku
@@ -193,10 +189,12 @@ export default defineComponent({
     }
   }
   .goods-name {
-    font-size: 18px;
-    font-weight: bolder;
-    margin-top: math.div($g-1, 2);
+    padding: math.div($g-1, 2) $g-1;
     margin-bottom: $g-1;
+    margin-top: math.div($g-1, 2);
+    background: $font-color-2;
+    border-radius: 3px;
+    font-size: 18px;
   }
   .goods-price {
     display: flex;
