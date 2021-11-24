@@ -116,6 +116,7 @@ export default defineComponent({
     const filter = ref('')
     // 切换分类类型
     const onChangeSortType = async name => {
+      if (sortType.value === name) return
       router.push({ name: 'lease_sort', params: { sortType: name } })
       clearGoodsList(true)
       currnetPageIndex.value = 1
@@ -124,6 +125,7 @@ export default defineComponent({
     }
     // 改变服饰类型
     const onChangeFilter = async ({ name }) => {
+      if (filter.value === name) return
       clearGoodsList()
       currnetPageIndex.value = 1
       filter.value = name
