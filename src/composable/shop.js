@@ -32,10 +32,7 @@ export default function () {
     const sort_type = router.currentRoute.value.params['sortType']
     if (!sort_type) return
     const { data, success } = axiosDataResolveHandle(
-      await getGoodsFilters_API(
-        JSON.parse(localStorage.getItem('selected_shop')).shop_id,
-        sort_type
-      )
+      await getGoodsFilters_API(sort_type)
     )
     if (success) {
       filters.value = [{ category_id: '', category_name: '全部' }, ...data]

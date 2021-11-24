@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, unref } from 'vue'
 import useShop from '../../composable/shop'
 import ItemCard from '../lease/goods/item_card.vue'
 import { Shirt, Ruler2, ChartBubble, Camera } from '@vicons/tabler'
@@ -136,7 +136,7 @@ export default defineComponent({
     // 加载函数
     const onLoad = async () => {
       currnetPageIndex.value++
-      if(!filters.value.length) await getGoodsFilters()
+      if (!filters.value.length) await getGoodsFilters()
       const resultLength = await getGoodsList(
         sortType.value,
         filter.value,

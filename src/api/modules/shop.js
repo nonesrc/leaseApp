@@ -38,7 +38,7 @@ export function getShopList_API() {
  */
 export function getGoodsList_API(sort_type, filter, page, count) {
   return ARFactory({
-    url: DEV_MODE ? 'http://rap2api.taobao.org/app/mock/291472/api/public/shop/goods_list' : '',
+    url: DEV_MODE ? 'api/public/shop/goods_list' : '',
     method: 'GET',
     params: {
       shop_id: JSON.parse(localStorage.getItem('selected_shop')).shop_id,
@@ -58,7 +58,7 @@ export function getGoodsList_API(sort_type, filter, page, count) {
 export function getGoodsDetails_API(goods_id) {
   return ARFactory({
     url: DEV_MODE
-      ? 'http://rap2api.taobao.org/app/mock/291472/api/public/shop/goods/details'
+      ? 'api/public/shop/goods/details'
       : '',
     method: 'GET',
     params: { goods_id },
@@ -73,7 +73,7 @@ export function getGoodsDetails_API(goods_id) {
 export function getGoodsFilters_API(sort_type) {
   return ARFactory({
     url: DEV_MODE
-      ? 'http://rap2api.taobao.org/app/mock/291472/api/public/shop/filters'
+      ? 'api/public/shop/filters'
       : '',
     method: 'GET',
     params: {
