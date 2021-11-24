@@ -121,14 +121,14 @@ export default defineComponent({
       clearGoodsList(true)
       currnetPageIndex.value = 1
       await getGoodsFilters(name)
-      await getGoodsList(name, '', currnetPageIndex.value, 10)
+      await getGoodsList(name, '', currnetPageIndex.value, 100)
     }
     // 改变服饰类型
     const onChangeFilter = async ({ name }) => {
       clearGoodsList()
       currnetPageIndex.value = 1
       filter.value = name
-      await getGoodsList(sortType.value, name, currnetPageIndex.value, 10)
+      await getGoodsList(sortType.value, name, currnetPageIndex.value, 100)
     }
     // 是否正在加载
     const loading = ref(false)
