@@ -110,7 +110,7 @@ export default defineComponent({
     const currnetPageIndex = ref(1)
     // 分类类型
     const sortType = computed(() => {
-      return router.currentRoute.value.params['sortType'] || 'error'
+      return router.currentRoute.value.params['sortType'] || 'rent'
     })
     // 二级分类
     const filter = ref('')
@@ -125,7 +125,6 @@ export default defineComponent({
     }
     // 改变服饰类型
     const onChangeFilter = async ({ name }) => {
-      if (filter.value === name) return
       clearGoodsList()
       currnetPageIndex.value = 1
       filter.value = name
@@ -137,12 +136,11 @@ export default defineComponent({
     const finished = ref(false)
     // 加载函数
     const onLoad = async () => {
-      currnetPageIndex.value++
-      if (!filters.value.length) await getGoodsFilters()
+      if (!filters.value.length) await getGoodsFilters(sortType.value)
       const resultLength = await getGoodsList(
         sortType.value,
         filter.value,
-        currnetPageIndex.value,
+        currnetPageIndex.value++,
         10
       )
       if (resultLength < 10) {
