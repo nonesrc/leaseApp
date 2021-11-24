@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('检查仓库') {
             steps {
-                git branch: 'master', credentialsId: 'bec34d29-6cf2-408d-8ed1-cf279cf6f5aa', url: 'git@github.com:nonesrc/rentApp.git'
+                git branch: 'dev', credentialsId: 'bec34d29-6cf2-408d-8ed1-cf279cf6f5aa', url: 'git@github.com:nonesrc/rentApp.git'
             }
         }
 
