@@ -12,6 +12,10 @@ const entrance = {
   },
   children: [
     {
+      path: '',
+      redirect: '/home',
+    },
+    {
       path: 'home',
       name: 'lease_home',
       component: Home,

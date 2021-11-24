@@ -25,6 +25,7 @@
                     ? currentGoodsDetails.rent_money
                     : currentGoodsDetails.market_price
                 "
+                :fontColor="'#ff4c29'"
                 :unit="currentGoodsDetails.unit"
               />
               <Price
@@ -49,7 +50,7 @@
         </van-cell>
       </van-cell-group>
       <!-- 商品详情 & 评论 -->
-      <van-tabs v-model:active="currentTabs" color="#082032" sticky animated>
+      <van-tabs v-model:active="currentTabs" color="#ff4c29" sticky animated>
         <van-tab name="details">
           <template #title>详情</template>
           <div class="goods-details-img">

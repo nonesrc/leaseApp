@@ -1,7 +1,7 @@
 <template>
   <div class="lease-sort">
     <section class="selection-taps">
-      <van-grid :clickable="true" :border="false">
+      <van-grid :border="false">
         <van-grid-item text="租赁" @click="onChangeSortType('rent')">
           <template #icon
             ><Icon size="30" :color="sortType === 'rent' ? '#ff4c29' : ''">
