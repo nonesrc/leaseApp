@@ -141,9 +141,9 @@ export default defineComponent({
         sortType.value,
         filter.value,
         currnetPageIndex.value++,
-        10
+        100
       )
-      if (resultLength < 10) {
+      if (resultLength < 100) {
         finished.value = true
       }
     }
