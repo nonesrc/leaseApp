@@ -119,7 +119,7 @@ export default defineComponent({
       router.push({ name: 'lease_sort', params: { sortType: name } })
       clearGoodsList(true)
       currnetPageIndex.value = 1
-      await getGoodsFilters()
+      await getGoodsFilters(name)
       await getGoodsList(name, '', currnetPageIndex.value, 10)
     }
     // 改变服饰类型

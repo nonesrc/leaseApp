@@ -28,9 +28,7 @@ export default function () {
   const currentGoodsDetails = ref({ ...goodsDetails })
 
   // 获取商铺详细分类
-  const getGoodsFilters = async () => {
-    const sort_type = router.currentRoute.value.params['sortType']
-    if (!sort_type) return
+  const getGoodsFilters = async (sort_type) => {
     const { data, success } = axiosDataResolveHandle(
       await getGoodsFilters_API(sort_type)
     )
