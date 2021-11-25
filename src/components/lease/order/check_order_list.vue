@@ -103,7 +103,7 @@ export default defineComponent({
         justify-content: space-evenly;
         flex-grow: 1;
         span {
-          color: $color-g-2;
+          color: $color-g-3;
           display: block;
           font-size: 14px;
           &:nth-child(2) {

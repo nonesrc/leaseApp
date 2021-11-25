@@ -55,7 +55,7 @@ export default defineComponent({
   min-height: calc(100vh - 46px);
   .banner {
     height: 200px;
-    background: $color-g-2;
+    background: $color-g-3;
     clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
     margin-bottom: 100px;
   }

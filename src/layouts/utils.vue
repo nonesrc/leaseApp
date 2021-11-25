@@ -40,7 +40,6 @@ export default defineComponent({
     const title = computed(() => {
       return router.currentRoute.value.meta.title || ''
     })
-    // TEST
     const onClickLeft = () => {
       router.go(-1)
     }

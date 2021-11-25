@@ -125,6 +125,7 @@ export default defineComponent({
     }
     // 改变服饰类型
     const onChangeFilter = async ({ name }) => {
+      if (filter.value === name) return
       clearGoodsList()
       currnetPageIndex.value = 1
       filter.value = name
@@ -179,7 +180,7 @@ export default defineComponent({
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 10px;
+    row-gap: 20px;
   }
 }
 </style>

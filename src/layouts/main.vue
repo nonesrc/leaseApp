@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, inject } from 'vue'
+import { computed, defineComponent, inject, ref } from 'vue'
 import { coreStateKey } from '../state'
 import router from '../routers'
 import { SmartHome, ShoppingCart, User } from '@vicons/tabler'
@@ -59,9 +59,11 @@ export default defineComponent({
   setup() {
     const {
       controler: {
-        state: { entranceBarActive, searchText },
+        state: { searchText },
       },
     } = inject(coreStateKey)
+    // 当前活跃导航
+    const entranceBarActive = ref(0)
     // 当前页面tag
     const currentPageTag = computed(
       () => router.currentRoute.value.meta.tag || 'home'
@@ -73,7 +75,6 @@ export default defineComponent({
 
 <style lang="scss">
 .layout-main {
-  // min-height: 100vh;
   padding-bottom: 50px;
 }
 </style>

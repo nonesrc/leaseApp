@@ -1,12 +1,12 @@
 <template>
   <van-config-provider :theme-vars="themeVars">
     <div class="lease-goods">
-      <van-swipe :autoplay="3000" lazy-render>
+      <van-swipe :autoplay="3000" lazy-render indicator-color="#ff4c29">
         <van-swipe-item
           v-for="image in currentGoodsDetails.slide_show_array"
           :key="image"
         >
-          <img :src="image" />
+          <van-image fit="scale-down" width="100%" height="100%" :src="image" />
         </van-swipe-item>
       </van-swipe>
       <!-- 商品价格 -->
@@ -58,9 +58,7 @@
               :src="img"
               v-for="img in currentGoodsDetails.deatil_imgs"
               :key="img"
-              alt="商品详情"
-              width="100%"
-              height="360"
+              fit="scale-down"
             >
               <template v-slot:loading>
                 <van-loading type="spinner" size="20" :vertical="true" />
@@ -199,7 +197,7 @@ export default defineComponent({
   }
   .goods-price {
     display: flex;
-    color: $color-g-2;
+    color: $color-g-3;
     font-size: 17px;
     margin-bottom: math.div($g-1, 2);
     & > *:nth-child(2) {
@@ -210,7 +208,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     height: 30px;
-    color: $color-g-2;
+    color: $color-g-3;
     font-size: 14px;
   }
   .goods-details-img {

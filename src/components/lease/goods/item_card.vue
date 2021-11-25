@@ -8,8 +8,9 @@
   >
     <div class="icon">
       <van-image
-        width="150px"
-        height="150px"
+        width="140px"
+        height="140px"
+        radius="3px"
         fit="cover"
         :src="goods.main_img"
       />
@@ -23,7 +24,9 @@
           :amount="
             goods.sale_type === 0 ? goods.rent_money : goods.market_price
           "
-          unit="天"
+          :fontSise="12"
+          :fontColor="'#ff4c29'"
+          :unit="goods.unit"
         />
       </div>
     </div>
@@ -58,15 +61,16 @@ export default defineComponent({
 @import '../../../assets/styles/index.scss';
 
 .lease-item-card {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 150px;
-  background: $font-color-1;
+  width: 160px;
+  padding: 10px;
+  border: 1px solid #d0d7de;
+  border-radius: 3px;
   color: inherit;
   .item-info {
-    padding: math.div($g-1, 2);
-    padding-top: 0px;
     .describe {
       min-height: $g-2;
       font-size: 13px;
