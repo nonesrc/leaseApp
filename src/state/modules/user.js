@@ -16,7 +16,7 @@ export default function () {
   })
 
   // mutations
-  const reUserSelectdeShop = shop => {
+  const reUserSelectdedShop = shop => {
     userSelectedShop.value = shop
   }
   const reCurrentUser = user => {
@@ -26,7 +26,7 @@ export default function () {
 
   return {
     state: { currentUser, userSelectedShop },
-    mutations: { reCurrentUser, reUserSelectdeShop },
+    mutations: { reCurrentUser, reUserSelectdedShop },
     actions: {},
   }
 }

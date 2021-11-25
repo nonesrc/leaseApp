@@ -4,25 +4,35 @@
     <div class="banner">
       {{ userSelectedShop.shop_name }}
     </div>
+    <div class="change-shop">
+      <van-button size="small" @click="reShowSelectShop(true)"
+        >更换门店</van-button
+      >
+    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent, inject } from 'vue'
-import { Image as VanImage } from 'vant'
 import { coreStateKey } from '../../state'
+import { Image as VanImage, Button } from 'vant'
+
 export default defineComponent({
   name: 'lease_home',
   components: {
-    VanImage,
+    [Button.name]: Button,
+    [VanImage.name]: VanImage,
   },
   setup() {
     const {
       user: {
         state: { userSelectedShop },
       },
+      controler: {
+        mutations: { reShowSelectShop },
+      },
     } = inject(coreStateKey)
-    return { userSelectedShop }
+    return { userSelectedShop, reShowSelectShop }
   },
 })
 </script>
@@ -40,6 +50,9 @@ export default defineComponent({
     font-size: 20px;
     font-weight: 500;
     text-align: center;
+  }
+  .change-shop {
+    margin-top: 10px;
   }
 }
 </style>
