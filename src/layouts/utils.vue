@@ -1,11 +1,7 @@
 <template>
   <van-config-provider :theme-vars="themeVars">
     <div class="layout-utils">
-      <van-nav-bar
-        :title="title"
-        @click-left="onClickLeft"
-        @click-right="onClickRight"
-      >
+      <van-nav-bar :title="title" @click-left="onClickLeft">
         <template #left>
           <Icon size="22"><ArrowBack /></Icon><span> 返回</span>
         </template>
@@ -16,7 +12,7 @@
 </template>
 
 <script>
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, onMounted } from 'vue'
 import { ArrowBack } from '@vicons/tabler'
 import { Icon } from '@vicons/utils'
 import router from '../routers'
@@ -41,11 +37,9 @@ export default defineComponent({
       return router.currentRoute.value.meta.title || ''
     })
     const onClickLeft = () => {
-      router.go(-1)
+      history.length > 2 ? router.go(-1) : router.push({ name: 'lease_home' })
     }
-    const onClickRight = () => {}
-
-    return { themeVars, title, onClickLeft, onClickRight }
+    return { themeVars, title, onClickLeft }
   },
 })
 </script>
